@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/Users/pat/space/midi_sequencer/build-win64/_deps/rtmidi-subbuild/CMakeFiles/rtmidi-populate"
+		},
+		{
+			"file" : "/Users/pat/space/midi_sequencer/build-win64/_deps/rtmidi-subbuild/CMakeFiles/rtmidi-populate.rule"
+		},
+		{
+			"file" : "/Users/pat/space/midi_sequencer/build-win64/_deps/rtmidi-subbuild/CMakeFiles/rtmidi-populate-complete.rule"
+		},
+		{
+			"file" : "/Users/pat/space/midi_sequencer/build-win64/_deps/rtmidi-subbuild/rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-build.rule"
+		},
+		{
+			"file" : "/Users/pat/space/midi_sequencer/build-win64/_deps/rtmidi-subbuild/rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-configure.rule"
+		},
+		{
+			"file" : "/Users/pat/space/midi_sequencer/build-win64/_deps/rtmidi-subbuild/rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-download.rule"
+		},
+		{
+			"file" : "/Users/pat/space/midi_sequencer/build-win64/_deps/rtmidi-subbuild/rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-install.rule"
+		},
+		{
+			"file" : "/Users/pat/space/midi_sequencer/build-win64/_deps/rtmidi-subbuild/rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-mkdir.rule"
+		},
+		{
+			"file" : "/Users/pat/space/midi_sequencer/build-win64/_deps/rtmidi-subbuild/rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-patch.rule"
+		},
+		{
+			"file" : "/Users/pat/space/midi_sequencer/build-win64/_deps/rtmidi-subbuild/rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-test.rule"
+		},
+		{
+			"file" : "/Users/pat/space/midi_sequencer/build-win64/_deps/rtmidi-subbuild/rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"rtmidi-populate"
+		],
+		"name" : "rtmidi-populate"
+	}
+}

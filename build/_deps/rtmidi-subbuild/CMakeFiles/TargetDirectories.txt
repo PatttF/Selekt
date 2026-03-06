@@ -1,0 +1,3 @@
+/Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/CMakeFiles/rtmidi-populate.dir
+/Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/CMakeFiles/edit_cache.dir
+/Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/CMakeFiles/rebuild_cache.dir

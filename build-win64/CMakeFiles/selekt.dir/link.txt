@@ -1,0 +1,3 @@
+/opt/homebrew/bin/cmake -E rm -f CMakeFiles/selekt.dir/objects.a
+/opt/homebrew/bin/x86_64-w64-mingw32-ar qc CMakeFiles/selekt.dir/objects.a @CMakeFiles/selekt.dir/objects1.rsp
+/opt/homebrew/bin/x86_64-w64-mingw32-g++ -O3 -DNDEBUG -static -static-libgcc -static-libstdc++ -mwindows -Wl,--whole-archive CMakeFiles/selekt.dir/objects.a -Wl,--no-whole-archive -o selekt.exe -Wl,--out-implib,libselekt.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/selekt.dir/linkLibs.rsp

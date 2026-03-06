@@ -1,0 +1,2 @@
+/opt/homebrew/bin/x86_64-w64-mingw32-ar qc librtmidi.a CMakeFiles/rtmidi.dir/RtMidi.cpp.obj CMakeFiles/rtmidi.dir/rtmidi_c.cpp.obj
+/opt/homebrew/bin/x86_64-w64-mingw32-ranlib librtmidi.a

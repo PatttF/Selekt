@@ -1,0 +1,3 @@
+# Hashes of file build rules.
+485b620dfec468daa5c3235241795c36 _deps/glfw-build/src/CMakeFiles/update_mappings
+1935fc1b6cfcd09d347f7d1f77c86cb7 _deps/rtmidi-build/CMakeFiles/uninstall

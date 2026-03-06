@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
