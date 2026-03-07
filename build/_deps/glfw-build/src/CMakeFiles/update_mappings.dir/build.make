@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/pat/space/midi_sequencer
+CMAKE_SOURCE_DIR = /Users/pat/Desktop/Selekt
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/pat/space/midi_sequencer/build
+CMAKE_BINARY_DIR = /Users/pat/Desktop/Selekt/build
 
 # Utility rule file for update_mappings.
 
@@ -67,8 +67,8 @@ include _deps/glfw-build/src/CMakeFiles/update_mappings.dir/compiler_depend.make
 include _deps/glfw-build/src/CMakeFiles/update_mappings.dir/progress.make
 
 _deps/glfw-build/src/CMakeFiles/update_mappings:
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/pat/space/midi_sequencer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Updating gamepad mappings from upstream repository"
-	cd /Users/pat/space/midi_sequencer/build/_deps/glfw-src/src && /opt/homebrew/bin/cmake -P /Users/pat/space/midi_sequencer/build/_deps/glfw-src/CMake/GenerateMappings.cmake mappings.h.in mappings.h
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/pat/Desktop/Selekt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Updating gamepad mappings from upstream repository"
+	cd /Users/pat/Desktop/Selekt/build/_deps/glfw-src/src && /opt/homebrew/bin/cmake -P /Users/pat/Desktop/Selekt/build/_deps/glfw-src/CMake/GenerateMappings.cmake mappings.h.in mappings.h
 
 _deps/glfw-build/src/CMakeFiles/update_mappings.dir/codegen:
 .PHONY : _deps/glfw-build/src/CMakeFiles/update_mappings.dir/codegen
@@ -82,10 +82,10 @@ _deps/glfw-build/src/CMakeFiles/update_mappings.dir/build: update_mappings
 .PHONY : _deps/glfw-build/src/CMakeFiles/update_mappings.dir/build
 
 _deps/glfw-build/src/CMakeFiles/update_mappings.dir/clean:
-	cd /Users/pat/space/midi_sequencer/build/_deps/glfw-build/src && $(CMAKE_COMMAND) -P CMakeFiles/update_mappings.dir/cmake_clean.cmake
+	cd /Users/pat/Desktop/Selekt/build/_deps/glfw-build/src && $(CMAKE_COMMAND) -P CMakeFiles/update_mappings.dir/cmake_clean.cmake
 .PHONY : _deps/glfw-build/src/CMakeFiles/update_mappings.dir/clean
 
 _deps/glfw-build/src/CMakeFiles/update_mappings.dir/depend:
-	cd /Users/pat/space/midi_sequencer/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/pat/space/midi_sequencer /Users/pat/space/midi_sequencer/build/_deps/glfw-src/src /Users/pat/space/midi_sequencer/build /Users/pat/space/midi_sequencer/build/_deps/glfw-build/src /Users/pat/space/midi_sequencer/build/_deps/glfw-build/src/CMakeFiles/update_mappings.dir/DependInfo.cmake "--color=$(COLOR)" update_mappings
+	cd /Users/pat/Desktop/Selekt/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/pat/Desktop/Selekt /Users/pat/Desktop/Selekt/build/_deps/glfw-src/src /Users/pat/Desktop/Selekt/build /Users/pat/Desktop/Selekt/build/_deps/glfw-build/src /Users/pat/Desktop/Selekt/build/_deps/glfw-build/src/CMakeFiles/update_mappings.dir/DependInfo.cmake "--color=$(COLOR)" update_mappings
 .PHONY : _deps/glfw-build/src/CMakeFiles/update_mappings.dir/depend
 

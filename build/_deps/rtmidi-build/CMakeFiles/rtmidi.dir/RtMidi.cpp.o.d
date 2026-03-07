@@ -1,6 +1,6 @@
 _deps/rtmidi-build/CMakeFiles/rtmidi.dir/RtMidi.cpp.o: \
-  /Users/pat/space/midi_sequencer/build/_deps/rtmidi-src/RtMidi.cpp \
-  /Users/pat/space/midi_sequencer/build/_deps/rtmidi-src/RtMidi.h \
+  /Users/pat/Desktop/Selekt/build/_deps/rtmidi-src/RtMidi.cpp \
+  /Users/pat/Desktop/Selekt/build/_deps/rtmidi-src/RtMidi.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/exception \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config_site \
@@ -784,6 +784,7 @@ _deps/rtmidi-build/CMakeFiles/rtmidi.dir/RtMidi.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreMIDI.framework/Headers/MIDIServices.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CoreFoundation.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/assert.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_assert.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_static_assert.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/float.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/float.h \

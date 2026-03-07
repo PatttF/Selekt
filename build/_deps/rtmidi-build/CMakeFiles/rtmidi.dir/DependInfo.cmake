@@ -8,8 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/pat/space/midi_sequencer/build/_deps/rtmidi-src/RtMidi.cpp" "_deps/rtmidi-build/CMakeFiles/rtmidi.dir/RtMidi.cpp.o" "gcc" "_deps/rtmidi-build/CMakeFiles/rtmidi.dir/RtMidi.cpp.o.d"
-  "/Users/pat/space/midi_sequencer/build/_deps/rtmidi-src/rtmidi_c.cpp" "_deps/rtmidi-build/CMakeFiles/rtmidi.dir/rtmidi_c.cpp.o" "gcc" "_deps/rtmidi-build/CMakeFiles/rtmidi.dir/rtmidi_c.cpp.o.d"
+  "/Users/pat/Desktop/Selekt/build/_deps/rtmidi-src/RtMidi.cpp" "_deps/rtmidi-build/CMakeFiles/rtmidi.dir/RtMidi.cpp.o" "gcc" "_deps/rtmidi-build/CMakeFiles/rtmidi.dir/RtMidi.cpp.o.d"
+  "/Users/pat/Desktop/Selekt/build/_deps/rtmidi-src/rtmidi_c.cpp" "_deps/rtmidi-build/CMakeFiles/rtmidi.dir/rtmidi_c.cpp.o" "gcc" "_deps/rtmidi-build/CMakeFiles/rtmidi.dir/rtmidi_c.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

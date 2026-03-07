@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/pat/space/midi_sequencer
+CMAKE_SOURCE_DIR = /Users/pat/Desktop/Selekt
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/pat/space/midi_sequencer/build
+CMAKE_BINARY_DIR = /Users/pat/Desktop/Selekt/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/imgui_lib.dir/depend.make
@@ -75,86 +75,86 @@ CMakeFiles/imgui_lib.dir/codegen:
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui.cpp.o: CMakeFiles/imgui_lib.dir/flags.make
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui.cpp.o: _deps/imgui-src/imgui.cpp
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui.cpp.o: CMakeFiles/imgui_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/pat/space/midi_sequencer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui.cpp.o -MF CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui.cpp.o.d -o CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui.cpp.o -c /Users/pat/space/midi_sequencer/build/_deps/imgui-src/imgui.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/pat/Desktop/Selekt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui.cpp.o -MF CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui.cpp.o.d -o CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui.cpp.o -c /Users/pat/Desktop/Selekt/build/_deps/imgui-src/imgui.cpp
 
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/pat/space/midi_sequencer/build/_deps/imgui-src/imgui.cpp > CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/pat/Desktop/Selekt/build/_deps/imgui-src/imgui.cpp > CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui.cpp.i
 
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/pat/space/midi_sequencer/build/_deps/imgui-src/imgui.cpp -o CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/pat/Desktop/Selekt/build/_deps/imgui-src/imgui.cpp -o CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui.cpp.s
 
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_draw.cpp.o: CMakeFiles/imgui_lib.dir/flags.make
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_draw.cpp.o: _deps/imgui-src/imgui_draw.cpp
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_draw.cpp.o: CMakeFiles/imgui_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/pat/space/midi_sequencer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_draw.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_draw.cpp.o -MF CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_draw.cpp.o.d -o CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_draw.cpp.o -c /Users/pat/space/midi_sequencer/build/_deps/imgui-src/imgui_draw.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/pat/Desktop/Selekt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_draw.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_draw.cpp.o -MF CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_draw.cpp.o.d -o CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_draw.cpp.o -c /Users/pat/Desktop/Selekt/build/_deps/imgui-src/imgui_draw.cpp
 
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_draw.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_draw.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/pat/space/midi_sequencer/build/_deps/imgui-src/imgui_draw.cpp > CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_draw.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/pat/Desktop/Selekt/build/_deps/imgui-src/imgui_draw.cpp > CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_draw.cpp.i
 
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_draw.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_draw.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/pat/space/midi_sequencer/build/_deps/imgui-src/imgui_draw.cpp -o CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_draw.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/pat/Desktop/Selekt/build/_deps/imgui-src/imgui_draw.cpp -o CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_draw.cpp.s
 
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_tables.cpp.o: CMakeFiles/imgui_lib.dir/flags.make
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_tables.cpp.o: _deps/imgui-src/imgui_tables.cpp
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_tables.cpp.o: CMakeFiles/imgui_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/pat/space/midi_sequencer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_tables.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_tables.cpp.o -MF CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_tables.cpp.o.d -o CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_tables.cpp.o -c /Users/pat/space/midi_sequencer/build/_deps/imgui-src/imgui_tables.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/pat/Desktop/Selekt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_tables.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_tables.cpp.o -MF CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_tables.cpp.o.d -o CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_tables.cpp.o -c /Users/pat/Desktop/Selekt/build/_deps/imgui-src/imgui_tables.cpp
 
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_tables.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_tables.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/pat/space/midi_sequencer/build/_deps/imgui-src/imgui_tables.cpp > CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_tables.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/pat/Desktop/Selekt/build/_deps/imgui-src/imgui_tables.cpp > CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_tables.cpp.i
 
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_tables.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_tables.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/pat/space/midi_sequencer/build/_deps/imgui-src/imgui_tables.cpp -o CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_tables.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/pat/Desktop/Selekt/build/_deps/imgui-src/imgui_tables.cpp -o CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_tables.cpp.s
 
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_widgets.cpp.o: CMakeFiles/imgui_lib.dir/flags.make
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_widgets.cpp.o: _deps/imgui-src/imgui_widgets.cpp
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_widgets.cpp.o: CMakeFiles/imgui_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/pat/space/midi_sequencer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_widgets.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_widgets.cpp.o -MF CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_widgets.cpp.o.d -o CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_widgets.cpp.o -c /Users/pat/space/midi_sequencer/build/_deps/imgui-src/imgui_widgets.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/pat/Desktop/Selekt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_widgets.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_widgets.cpp.o -MF CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_widgets.cpp.o.d -o CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_widgets.cpp.o -c /Users/pat/Desktop/Selekt/build/_deps/imgui-src/imgui_widgets.cpp
 
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_widgets.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_widgets.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/pat/space/midi_sequencer/build/_deps/imgui-src/imgui_widgets.cpp > CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_widgets.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/pat/Desktop/Selekt/build/_deps/imgui-src/imgui_widgets.cpp > CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_widgets.cpp.i
 
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_widgets.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_widgets.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/pat/space/midi_sequencer/build/_deps/imgui-src/imgui_widgets.cpp -o CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_widgets.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/pat/Desktop/Selekt/build/_deps/imgui-src/imgui_widgets.cpp -o CMakeFiles/imgui_lib.dir/_deps/imgui-src/imgui_widgets.cpp.s
 
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_glfw.cpp.o: CMakeFiles/imgui_lib.dir/flags.make
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_glfw.cpp.o: _deps/imgui-src/backends/imgui_impl_glfw.cpp
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_glfw.cpp.o: CMakeFiles/imgui_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/pat/space/midi_sequencer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_glfw.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_glfw.cpp.o -MF CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_glfw.cpp.o.d -o CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_glfw.cpp.o -c /Users/pat/space/midi_sequencer/build/_deps/imgui-src/backends/imgui_impl_glfw.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/pat/Desktop/Selekt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_glfw.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_glfw.cpp.o -MF CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_glfw.cpp.o.d -o CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_glfw.cpp.o -c /Users/pat/Desktop/Selekt/build/_deps/imgui-src/backends/imgui_impl_glfw.cpp
 
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_glfw.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_glfw.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/pat/space/midi_sequencer/build/_deps/imgui-src/backends/imgui_impl_glfw.cpp > CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_glfw.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/pat/Desktop/Selekt/build/_deps/imgui-src/backends/imgui_impl_glfw.cpp > CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_glfw.cpp.i
 
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_glfw.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_glfw.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/pat/space/midi_sequencer/build/_deps/imgui-src/backends/imgui_impl_glfw.cpp -o CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_glfw.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/pat/Desktop/Selekt/build/_deps/imgui-src/backends/imgui_impl_glfw.cpp -o CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_glfw.cpp.s
 
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_opengl3.cpp.o: CMakeFiles/imgui_lib.dir/flags.make
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_opengl3.cpp.o: _deps/imgui-src/backends/imgui_impl_opengl3.cpp
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_opengl3.cpp.o: CMakeFiles/imgui_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/pat/space/midi_sequencer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_opengl3.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_opengl3.cpp.o -MF CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_opengl3.cpp.o.d -o CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_opengl3.cpp.o -c /Users/pat/space/midi_sequencer/build/_deps/imgui-src/backends/imgui_impl_opengl3.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/pat/Desktop/Selekt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_opengl3.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_opengl3.cpp.o -MF CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_opengl3.cpp.o.d -o CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_opengl3.cpp.o -c /Users/pat/Desktop/Selekt/build/_deps/imgui-src/backends/imgui_impl_opengl3.cpp
 
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_opengl3.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_opengl3.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/pat/space/midi_sequencer/build/_deps/imgui-src/backends/imgui_impl_opengl3.cpp > CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_opengl3.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/pat/Desktop/Selekt/build/_deps/imgui-src/backends/imgui_impl_opengl3.cpp > CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_opengl3.cpp.i
 
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_opengl3.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_opengl3.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/pat/space/midi_sequencer/build/_deps/imgui-src/backends/imgui_impl_opengl3.cpp -o CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_opengl3.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/pat/Desktop/Selekt/build/_deps/imgui-src/backends/imgui_impl_opengl3.cpp -o CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_opengl3.cpp.s
 
 # Object files for target imgui_lib
 imgui_lib_OBJECTS = \
@@ -176,7 +176,7 @@ libimgui_lib.a: CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_glf
 libimgui_lib.a: CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_opengl3.cpp.o
 libimgui_lib.a: CMakeFiles/imgui_lib.dir/build.make
 libimgui_lib.a: CMakeFiles/imgui_lib.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/pat/space/midi_sequencer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX static library libimgui_lib.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/pat/Desktop/Selekt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX static library libimgui_lib.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/imgui_lib.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/imgui_lib.dir/link.txt --verbose=$(VERBOSE)
 
@@ -189,6 +189,6 @@ CMakeFiles/imgui_lib.dir/clean:
 .PHONY : CMakeFiles/imgui_lib.dir/clean
 
 CMakeFiles/imgui_lib.dir/depend:
-	cd /Users/pat/space/midi_sequencer/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/pat/space/midi_sequencer /Users/pat/space/midi_sequencer /Users/pat/space/midi_sequencer/build /Users/pat/space/midi_sequencer/build /Users/pat/space/midi_sequencer/build/CMakeFiles/imgui_lib.dir/DependInfo.cmake "--color=$(COLOR)" imgui_lib
+	cd /Users/pat/Desktop/Selekt/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/pat/Desktop/Selekt /Users/pat/Desktop/Selekt /Users/pat/Desktop/Selekt/build /Users/pat/Desktop/Selekt/build /Users/pat/Desktop/Selekt/build/CMakeFiles/imgui_lib.dir/DependInfo.cmake "--color=$(COLOR)" imgui_lib
 .PHONY : CMakeFiles/imgui_lib.dir/depend
 

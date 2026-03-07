@@ -1,5 +1,5 @@
 _deps/rtmidi-build/CMakeFiles/rtmidi.dir/rtmidi_c.cpp.o: \
-  /Users/pat/space/midi_sequencer/build/_deps/rtmidi-src/rtmidi_c.cpp \
+  /Users/pat/Desktop/Selekt/build/_deps/rtmidi-src/rtmidi_c.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config_site \
@@ -88,7 +88,7 @@ _deps/rtmidi-build/CMakeFiles/rtmidi.dir/rtmidi_c.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_abort.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_dev_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_mode_t.h \
-  /Users/pat/space/midi_sequencer/build/_deps/rtmidi-src/rtmidi_c.h \
+  /Users/pat/Desktop/Selekt/build/_deps/rtmidi-src/rtmidi_c.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/stdbool.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdbool.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/stddef.h \
@@ -102,7 +102,7 @@ _deps/rtmidi-build/CMakeFiles/rtmidi.dir/rtmidi_c.cpp.o: \
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stddef_nullptr_t.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stddef_max_align_t.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stddef_offsetof.h \
-  /Users/pat/space/midi_sequencer/build/_deps/rtmidi-src/RtMidi.h \
+  /Users/pat/Desktop/Selekt/build/_deps/rtmidi-src/RtMidi.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/exception \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__exception/exception.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__exception/exception_ptr.h \

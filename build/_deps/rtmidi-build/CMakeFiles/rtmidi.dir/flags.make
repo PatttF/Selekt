@@ -4,9 +4,9 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -DRTMIDI_EXPORT -D__MACOSX_CORE__
 
-CXX_INCLUDES = -I/Users/pat/space/midi_sequencer/build/_deps/rtmidi-src -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks
+CXX_INCLUDES = -I/Users/pat/Desktop/Selekt/build/_deps/rtmidi-src -F/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks
 
-CXX_FLAGSarm64 = -O3 -DNDEBUG -std=c++11 -arch arm64
+CXX_FLAGSarm64 = -std=c++11 -arch arm64
 
-CXX_FLAGS = -O3 -DNDEBUG -std=c++11 -arch arm64
+CXX_FLAGS = -std=c++11 -arch arm64
 

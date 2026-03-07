@@ -1,7 +1,7 @@
 _deps/glfw-build/src/CMakeFiles/glfw.dir/cocoa_monitor.m.o: \
-  /Users/pat/space/midi_sequencer/build/_deps/glfw-src/src/cocoa_monitor.m \
-  /Users/pat/space/midi_sequencer/build/_deps/glfw-src/src/internal.h \
-  /Users/pat/space/midi_sequencer/build/_deps/glfw-src/src/../include/GLFW/glfw3.h \
+  /Users/pat/Desktop/Selekt/build/_deps/glfw-src/src/cocoa_monitor.m \
+  /Users/pat/Desktop/Selekt/build/_deps/glfw-src/src/internal.h \
+  /Users/pat/Desktop/Selekt/build/_deps/glfw-src/src/../include/GLFW/glfw3.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/stddef.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stddef.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stddef_header_macro.h \
@@ -32,9 +32,9 @@ _deps/glfw-build/src/CMakeFiles/glfw.dir/cocoa_monitor.m.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_uintptr_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types/_intmax_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types/_uintmax_t.h \
-  /Users/pat/space/midi_sequencer/build/_deps/glfw-src/src/platform.h \
-  /Users/pat/space/midi_sequencer/build/_deps/glfw-src/src/null_platform.h \
-  /Users/pat/space/midi_sequencer/build/_deps/glfw-src/src/cocoa_platform.h \
+  /Users/pat/Desktop/Selekt/build/_deps/glfw-src/src/platform.h \
+  /Users/pat/Desktop/Selekt/build/_deps/glfw-src/src/null_platform.h \
+  /Users/pat/Desktop/Selekt/build/_deps/glfw-src/src/cocoa_platform.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Carbon.framework/Headers/Carbon.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Headers/CoreServices.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CoreFoundation.h \
@@ -113,10 +113,11 @@ _deps/glfw-build/src/CMakeFiles/glfw.dir/cocoa_monitor.m.o: \
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stdarg___va_copy.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stdarg_va_copy.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/assert.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_assert.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_bounds.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_static_assert.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/ctype.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_bounds.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/runetype.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_ct_rune_t.h \
@@ -1425,16 +1426,16 @@ _deps/glfw-build/src/CMakeFiles/glfw.dir/cocoa_monitor.m.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreData.framework/Headers/NSLightweightMigrationStage.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreData.framework/Headers/NSManagedObjectModelReference.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreData.framework/Headers/NSCoreDataCoreSpotlightDelegate.h \
-  /Users/pat/space/midi_sequencer/build/_deps/glfw-src/src/null_joystick.h \
-  /Users/pat/space/midi_sequencer/build/_deps/glfw-src/src/cocoa_joystick.h \
+  /Users/pat/Desktop/Selekt/build/_deps/glfw-src/src/null_joystick.h \
+  /Users/pat/Desktop/Selekt/build/_deps/glfw-src/src/cocoa_joystick.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/IOKit.framework/Headers/IOCFPlugIn.h \
-  /Users/pat/space/midi_sequencer/build/_deps/glfw-src/src/posix_thread.h \
+  /Users/pat/Desktop/Selekt/build/_deps/glfw-src/src/posix_thread.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/pthread.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/pthread/sched.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/pthread/pthread_impl.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/pthread/qos.h \
-  /Users/pat/space/midi_sequencer/build/_deps/glfw-src/src/cocoa_time.h \
-  /Users/pat/space/midi_sequencer/build/_deps/glfw-src/src/../include/GLFW/glfw3native.h \
+  /Users/pat/Desktop/Selekt/build/_deps/glfw-src/src/cocoa_time.h \
+  /Users/pat/Desktop/Selekt/build/_deps/glfw-src/src/../include/GLFW/glfw3native.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/IOKit.framework/Headers/graphics/IOGraphicsLib.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/IOKit.framework/Headers/graphics/IOFramebufferShared.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/IOKit.framework/Headers/graphics/IOGraphicsInterface.h \

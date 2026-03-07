@@ -1,8 +1,8 @@
-if(NOT EXISTS "/Users/pat/space/midi_sequencer/build/_deps/rtmidi-build/install_manifest.txt")
-  message(FATAL_ERROR "Cannot find install manifest: \"/Users/pat/space/midi_sequencer/build/_deps/rtmidi-build/install_manifest.txt\"")
-endif(NOT EXISTS "/Users/pat/space/midi_sequencer/build/_deps/rtmidi-build/install_manifest.txt")
+if(NOT EXISTS "/Users/pat/Desktop/Selekt/build/_deps/rtmidi-build/install_manifest.txt")
+  message(FATAL_ERROR "Cannot find install manifest: \"/Users/pat/Desktop/Selekt/build/_deps/rtmidi-build/install_manifest.txt\"")
+endif(NOT EXISTS "/Users/pat/Desktop/Selekt/build/_deps/rtmidi-build/install_manifest.txt")
 
-file(READ "/Users/pat/space/midi_sequencer/build/_deps/rtmidi-build/install_manifest.txt" files)
+file(READ "/Users/pat/Desktop/Selekt/build/_deps/rtmidi-build/install_manifest.txt" files)
 string(REGEX REPLACE "\n" ";" files "${files}")
 foreach(file ${files})
   message(STATUS "Uninstalling \"$ENV{DESTDIR}${file}\"")

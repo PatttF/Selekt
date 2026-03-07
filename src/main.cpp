@@ -147,6 +147,11 @@ public:
     void noteOff(int ch, int n) { sendMsg({(uint8_t)(0x80|(ch&0xF)),(uint8_t)(n&0x7F),0}); }
     void sendCC(int ch, int cc, int v) { sendMsg({(uint8_t)(0xB0|(ch&0xF)),(uint8_t)(cc&0x7F),(uint8_t)(v&0x7F)}); }
     void sendPC(int ch, int p) { sendMsg({(uint8_t)(0xC0|(ch&0xF)),(uint8_t)(p&0x7F)}); }
+    void sendNRPN(int ch, int nmsb, int nlsb, int val) {
+        sendCC(ch, 99, nmsb & 0x7F);
+        sendCC(ch, 98, nlsb & 0x7F);
+        sendCC(ch, 6,  val  & 0x7F);
+    }
     void sendRaw(uint8_t b) { sendMsg({b}); }
     std::vector<MidiEv> drain() {
         std::lock_guard<std::mutex> lk(mtx_);
@@ -184,7 +189,7 @@ struct Step {
     int  ratchet  = 1;     // 1-4 ratchet subdivisions
 };
 // ── Drum synth types & parameter names ───────────────────────────────
-static constexpr int NUM_SYNTH_PARAMS = 24;
+static constexpr int NUM_SYNTH_PARAMS = 114; // 19 pages × 6
 static constexpr int SYNTH_PARAMS_PER_PAGE = 6;
 enum DrumType { DT_KICK=0, DT_SNARE, DT_HIHAT, DT_TOM, DT_CLAP, DT_PERC, DT_CYMBAL, DT_SHAKER, DT_COWBELL, DT_RIDE, DT_CRASH, DT_COUNT };
 
@@ -239,7 +244,99 @@ static const ImU32 SYNTH_ACCENT[DT_COUNT] = {
     IM_COL32(240,220,90,255),   // CRASH    – bright gold
 };
 // CC numbers for each synth param slot (Sound Controller 1-12)
-static constexpr int SYNTH_CC[NUM_SYNTH_PARAMS] = {70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93};
+static constexpr int SYNTH_CC[NUM_SYNTH_PARAMS] = {
+    70,71,72,73,74,75,  // page 1
+    76,77,78,79,80,81,  // page 2
+    82,83,84,85,86,87,  // page 3
+    88,89,90,91,92,93,  // page 4
+    94,95,96,97,98,99,  // page 5 (generic extra)
+   100,101,102,103,104,105  // page 6 (generic extra)
+};
+
+// Circuit Tracks Synth 1/2 CC tables — 9 pages × 6 params each (pages 9-18 use NRPN)
+// All send on MIDI ch 1 (SY1) or ch 2 (SY2), except FX page slots 2-5 send on ch16
+static constexpr int CT_SYNTH_CC[9][6] = {
+    { 19, 20, 21, 22, 24, 26},  // pg0: OSC1 wave,interp,pw,vsync,density,semi
+    { 29, 30, 31, 33, 35, 37},  // pg1: OSC2 wave,interp,pw,vsync,density,semi
+    { 68, 74, 71, 63, 69, 79},  // pg2: FILTER type,freq,res,drive,track,e2freq
+    { 73, 75, 70, 72,108, 5 },  // pg3: ENV atk,dec,sus,rel,vel,porta
+    { 51, 52, 54, 56, 58, 59},  // pg4: MIXER o1lvl,o2lvl,ring,noise,preFX,postFX
+    {  3,  9, 13, 60, 78, 65},  // pg5: VOICE poly,preglide,kbdoct,fltroute,Qnorm,drvtype
+    { 91, 93, 88,111, 74, 71},  // pg6: FX dist,chorus,rvbSnd(SY1=88/SY2=89),dlySnd(SY1=111/SY2=112),mfxFreq,mfxRes
+    { 80, 81, 82, 83, 84, 85},  // pg7: MACRO macroKnobs 1-6 positions
+    { 25, 27, 28, 36, 39, 40},  // pg8: TUNE o1detune,o1cents,o1pb,o2detune,o2cents,o2pb
+};
+static const char* CT_SYNTH_PNAMES[9][6] = {
+    {"O1WAVE","O1INTP","O1 PW","O1VSN","O1DNS","O1SEMI"},  // OSC1
+    {"O2WAVE","O2INTP","O2 PW","O2VSN","O2DNS","O2SEMI"},  // OSC2
+    {"FTYPE","FREQ","RES","DRIVE","TRACK","E2FRQ"},         // FILTER
+    {"ATTK","DECAY","SUST","REL","E1VEL","PORTA"},          // ENV
+    {"O1LVL","O2LVL","RING","NOISE","PREFX","PSTFX"},       // MIXER
+    {"POLY","PRGLD","KBOCT","FRTNG","QNORM","DRVTP"},       // VOICE
+    {"DIST","CHORUS","RVB SND","DLY SND","MFX FRQ","MFX RES"}, // FX
+    {"MACRO1","MACRO2","MACRO3","MACRO4","MACRO5","MACRO6"}, // MACRO
+    {"O1DTUN","O1CENT","O1 PB","O2DTUN","O2CENT","O2 PB"},  // TUNE
+};
+static const char* CT_SYNTH_PAGE_NAMES[19] = {
+    "OSC 1","OSC 2","FILTER","ENV","MIXER","VOICE","FX","MACRO","TUNE",
+    "MOD 1","MOD 2","MOD 3","MOD 4","MOD 5","MOD 6","MOD 7","MOD 8","MOD 9","MOD 10"
+};
+// Mod matrix NRPN table — 10 slots × 4 params {msb,lsb}: src1,src2,depth,dest
+static constexpr int CT_MOD_NRPN[10][4][2] = {
+    {{1, 83},{1, 84},{1, 86},{1, 87}},  // mod 1
+    {{1, 88},{1, 89},{1, 91},{1, 92}},  // mod 2
+    {{1, 93},{1, 94},{1, 96},{1, 97}},  // mod 3
+    {{1, 98},{1, 99},{1,101},{1,102}},  // mod 4
+    {{1,103},{1,104},{1,106},{1,107}},  // mod 5
+    {{1,108},{1,109},{1,111},{1,112}},  // mod 6
+    {{1,113},{1,114},{1,116},{1,117}},  // mod 7
+    {{1,118},{1,119},{1,121},{1,122}},  // mod 8
+    {{1,123},{1,124},{1,126},{1,127}},  // mod 9
+    {{2,  0},{2,  1},{2,  3},{2,  4}},  // mod 10
+};
+static const char* CT_MOD_PNAMES[4] = {"SRC 1","SRC 2","DEPTH","DEST"};
+static const char* CT_MOD_SRC[13] = {
+    "DIRECT","MOD WHL","AFTOUCH","EXPR","VEL","KBD",
+    "LFO1 +","LFO1+/-","LFO2 +","LFO2+/-",
+    "ENV AMP","ENV FLT","ENV 3"
+};
+static const char* CT_MOD_DEST[18] = {
+    "O1+O2 P","O1 PTCH","O2 PTCH","O1 VSYN","O2 VSYN",
+    "O1 PW  ","O2 PW  ","O1 LVL ","O2 LVL ","NOISE  ",
+    "RING   ","FLT DRV","FLT FRQ","FLT RES","LFO1 RT",
+    "LFO2 RT","AMP DEC","FLT DEC"
+};
+
+// Circuit Tracks drum CC tables — 4 drums × 9 params
+// Params 0-6 send on MIDI ch10; params 7-8 (RVB/DLY sends) send on MIDI ch16
+static constexpr int CT_DRUM_CC[4][9] = {
+    { 8, 12, 14, 15, 16, 17, 77,  90, 113}, // DR1
+    {18, 23, 34, 40, 42, 43, 78, 106, 114}, // DR2
+    {44, 45, 46, 47, 48, 49, 79, 109, 115}, // DR3
+    {50, 53, 55, 57, 61, 76, 80, 110, 116}, // DR4
+};
+// MIDI channel (0-indexed) for each drum param slot
+static constexpr int CT_DRUM_PARAM_CH[9] = {9,9,9,9,9,9,9,15,15};
+static const char* CT_DRUM_PNAMES[9] = {"PATCH","LEVEL","PITCH","DECAY","DIST","EQ","PAN","RVB","DLY"};
+
+// Arturia MicroFreak CC tables — 4 pages × 6 params (-1 = unused slot)
+static constexpr int MF_CC[4][6] = {
+    {  9, 10, 12, 13,  5, -1},  // OSC: Type, Wave, Timbre, Shape, Glide
+    { 23, 83, 26,105,106, 29},  // FILTER+ENV: Cutoff, Res, EnvAmt, Attack, Decay, Sustain
+    {102,103, 28, 24, -1, -1},  // CYC ENV: Rise, Fall, Hold, Amount
+    { 93, 94, 91, 92,  2, 64},  // LFO/ARP: LFO free, LFO sync, ARP free, ARP sync, Spice, Hold
+};
+static const char* MF_OSC_TYPE_NAMES[] = {
+    "Basic", "Superwave", "Harmonic", "Wavetable", "Triangle", "Noise",
+    "PWM", "Mod", "FM", "Karplus", "Paraphonic", "Vocoder", "Waveshaper", "Sample"
+};
+static const char* MF_PNAMES[4][6] = {
+    {"TYPE","WAVE","TIMBRE","SHAPE","GLIDE",""},
+    {"CUTOFF","RES","ENV AMT","ATTACK","DECAY","SUST"},
+    {"RISE","FALL","HOLD","AMOUNT","",""},
+    {"LFO","LFO SYN","ARP","ARP SYN","SPICE","HOLD"},
+};
+static const char* MF_PAGE_NAMES[4] = {"OSC","FILTER","CYC ENV","LFO/ARP"};
 
 struct Track {
     std::string name;
@@ -249,7 +346,17 @@ struct Track {
     int dtype = DT_PERC;  // drum synth type
     Step steps[MAX_STEPS];
     // p[0-5]=SYNTH  p[6-11]=EXT(type-specific)  p[12-17]=FX  p[18-23]=FX2
-    int synthP[NUM_SYNTH_PARAMS] = {64,64,64,64,64,64, 0,0,0,0,0,0, 127,0,0,0,0,100, 0,40,0,40,0,60};
+    // Note: synthP[0] is overridden per-track at init for CT drum (patch 0-15)
+    int synthP[NUM_SYNTH_PARAMS] = {
+         0,64,64,64,64,64,  // page 1 (synthP[0]=drum patch default 0)
+         0, 0, 0, 0, 0, 0,  // page 2
+        127, 0, 0, 0, 0,100, // page 3
+         0,40, 0,40, 0,60,  // page 4
+        64,64,64,64,64,64,  // page 5
+        64,64,64,64,64,64,  // page 6
+         0, 0, 0, 0,64,64,  // page 7: FX (dist,chorus,rvbSnd,dlySnd,mfxFreq,mfxRes)
+         0, 0, 0, 0, 0, 0   // page 8: MACRO knobs 1-6
+    };
 };
 static const struct { const char* n; int note; int dtype; } TDEFS[NUM_TRACKS] = {
     {"KICK",36,DT_KICK},{"SNARE",38,DT_SNARE},{"HI-HAT",42,DT_HIHAT},{"OH",46,DT_HIHAT},
@@ -299,6 +406,9 @@ struct App {
     bool   wasPaused = false;    // true after pause, so playhead stays visible
     // Synth param page
     int    synthPage = 0;  // 0=SYNTH 1=EXT 2=FX 3=FX2
+    // Circuit Tracks track selector
+    int    ctTrack    = -1; // -1=none 0=SY1 1=SY2 2=DR1 3=DR2 4=DR3 5=DR4
+    int    ctDrumPage =  0; // drum param page when ctTrack>=2
     // Mutate (randomise velocities & toggle random steps)
     // Ratchet scheduling
     int    ratchetTrack = -1;
@@ -368,6 +478,8 @@ static void triggerStep(App& app, double now) {
     int s = app.curStep;
     int totalSteps = app.numPages * NUM_STEPS;
     double stepSec = 15.0 / app.bpm;
+    // CT drum mode flag
+    bool isCTDrum = (app.ctTrack >= 2);
     for (int t = 0; t < NUM_TRACKS; ++t) {
         if (s >= app.tracks[t].patLen || !app.tracks[t].steps[s].on) continue;
         const Step& step = app.tracks[t].steps[s];
@@ -375,11 +487,34 @@ static void triggerStep(App& app, double now) {
         if (step.prob < 100) {
             if ((rand() % 100) >= step.prob) continue;
         }
+        int note = app.tracks[t].note;
         int ratch = step.ratchet;
+        // Retrigger: remove stale pending note-offs for this ch+note (CT drum only)
+        if (isCTDrum) {
+            app.pendingOffs.erase(
+                std::remove_if(app.pendingOffs.begin(), app.pendingOffs.end(),
+                    [&](const PendingOff& p){ return p.ch == app.midiCh && p.note == note; }),
+                app.pendingOffs.end());
+        }
+        // CT drum: NoteOff to clear voice, PATCH CC to select sample, NoteOn to fire
+        if (isCTDrum) {
+            int drumIdx = app.ctTrack - 2;
+            int drumNote = app.tracks[t].note;
+            int patchVal = app.tracks[t].synthP[0];
+            app.midi.noteOff(9, drumNote);
+            app.midi.sendCC(9, CT_DRUM_CC[drumIdx][0], patchVal);
+            app.midi.noteOn(9, drumNote, step.vel);
+            fprintf(stderr, "[CT DRUM seq] drumIdx=%d CC=%d patch=%d note=%d\n",
+                drumIdx, CT_DRUM_CC[drumIdx][0], patchVal, drumNote);
+            app.pendingOffs.push_back({9, drumNote, now + 0.15});
+            app.padFlash[t] = now;
+            app.stepFlash[t][s] = now;
+            continue;
+        }
         // Fire first hit
         double noteDur = (15.0 / app.bpm) * app.tracks[t].noteLen * 0.9;
-        app.midi.noteOn(app.midiCh, app.tracks[t].note, step.vel);
-        app.pendingOffs.push_back({app.midiCh, app.tracks[t].note, now + noteDur});
+        app.midi.noteOn(app.midiCh, note, step.vel);
+        app.pendingOffs.push_back({app.midiCh, note, now + noteDur});
         if (app.midi.synthEnabled()) synthTrigger(app, t, (float)step.vel);
         app.padFlash[t] = now;
         app.stepFlash[t][s] = now;
@@ -387,7 +522,7 @@ static void triggerStep(App& app, double now) {
         if (ratch > 1) {
             app.ratchetTrack = t;
             app.ratchetStep  = s;
-            app.ratchetNote = app.tracks[t].note;
+            app.ratchetNote = note;
             app.ratchetCh = app.midiCh;
             app.ratchetTotal = ratch;
             app.ratchetDone = 1;
@@ -1056,6 +1191,14 @@ static void renderFrame(App& app) {
     // ── Incoming MIDI ────────────────────────────────────────────────
     for (auto& e : app.midi.drain()) {
         uint8_t type = e.st & 0xF0;
+        uint8_t ch   = e.st & 0x0F;
+        // Log all incoming messages for debugging
+        if (type == 0x80) fprintf(stderr, "[MIDI IN] NoteOff  ch=%d note=%d vel=%d\n", ch+1, e.d1, e.d2);
+        else if (type == 0x90) fprintf(stderr, "[MIDI IN] NoteOn   ch=%d note=%d vel=%d\n", ch+1, e.d1, e.d2);
+        else if (type == 0xA0) fprintf(stderr, "[MIDI IN] Aftertouch ch=%d note=%d val=%d\n", ch+1, e.d1, e.d2);
+        else if (type == 0xB0) fprintf(stderr, "[MIDI IN] CC       ch=%d cc=%d val=%d\n", ch+1, e.d1, e.d2);
+        else if (type == 0xC0) fprintf(stderr, "[MIDI IN] ProgramChange ch=%d prog=%d\n", ch+1, e.d1);
+        else if (e.st >= 0xF0) fprintf(stderr, "[MIDI IN] Sys/RT   0x%02X 0x%02X 0x%02X\n", e.st, e.d1, e.d2);
         if (type == 0x90 && e.d2 > 0) {
             for (int t = 0; t < NUM_TRACKS; ++t)
                 if (app.tracks[t].note == e.d1) app.padFlash[t] = now;
@@ -1387,9 +1530,30 @@ static void renderFrame(App& app) {
         if (!app.showMidi && ImGui::IsItemClicked()) {
             app.playing = false; app.wasPaused = false; app.curStep = 0;
             if (app.clockOut) app.midi.sendRaw(0xFC);
+            // Send note-off for all pending notes
+            for (const auto& off : app.pendingOffs) app.midi.noteOff(off.ch, off.note);
+            app.pendingOffs.clear();
         }
         if (ImGui::IsItemHovered())
             dl->AddRect(ImVec2(sx,ty), ImVec2(sx+pw,ty+th), im(255,80,80), 8);
+
+        // MIDI Panic/All Notes Off button
+        float px = sx + pw + 10;
+        ImGui::SetCursorScreenPos(ImVec2(px,ty));
+        ImGui::InvisibleButton("##panic", ImVec2(pw,th));
+        if (!app.showMidi && ImGui::IsItemClicked()) {
+            for (int ch = 0; ch < 16; ++ch) app.midi.sendCC(ch, 123, 0);
+            app.pendingOffs.clear();
+        }
+        if (ImGui::IsItemHovered())
+            dl->AddRect(ImVec2(px,ty), ImVec2(px+pw,ty+th), im(255,180,80), 8);
+        ImGui::SetCursorScreenPos(ImVec2(px+pw/2-18,ty+th/2-7));
+        ImGui::Text("PANIC");
+    // MicroFreak oscillator type labels
+    static const char* MF_OSC_TYPE_NAMES[] = {
+        "Basic", "Superwave", "Harmonic", "Wavetable", "Triangle", "Noise",
+        "PWM", "Mod", "FM", "Karplus", "Paraphonic", "Vocoder", "Waveshaper", "Sample"
+    };
     }
 
     // ═══════════════════ LAYOUT ═════════════════════════════════════
@@ -1419,6 +1583,10 @@ static void renderFrame(App& app) {
     if (rowH > 44) rowH = 44;
     float gridBotY = contentY + seqHdrH + NUM_TRACKS * rowH;
     float synthTopY = gridBotY + 2;
+
+    // ── Dropdown open states (declared here so pad input guard can reference them) ──
+    static bool ctDropOpen = false;
+    static bool pgDropOpen = false;
 
     // ═══════════════════ LEFT PANEL ═════════════════════════════════
     GradV(dl, ImVec2(0, contentY), ImVec2(leftW, H-statusH), im(16,15,24), im(12,11,19));
@@ -1470,7 +1638,7 @@ static void renderFrame(App& app) {
         if (!app.showMidi && ImGui::IsItemHovered() && io.MouseWheel != 0)
             app.bpm = std::clamp(app.bpm + io.MouseWheel * 0.5f, 20.f, 300.f);
     }
-    // ── Octave shift (below BPM, only when MIDI out is selected) ──
+    // ── Octave shift / CT drum page (below BPM, only when MIDI out is selected) ──
     if (app.midi.curOut() >= 0) {
         float octY = contentY + 6 + 52 + 8;
         float octH = 44.f;
@@ -1479,33 +1647,59 @@ static void renderFrame(App& app) {
         float oby  = octY + octH/2 - obH/2;
         float omx  = cx2 - obW - 36.f - 8.f;
         float opx  = cx2 + 36.f + 8.f;
-        // Label
-        if (fSm) ImGui::PushFont(fSm);
-        ImVec2 ols = ImGui::CalcTextSize("OCTAVE");
-        dl->AddText(ImVec2(cx2 - ols.x/2, octY + octH/2 - ols.y/2), im(120,115,160), "OCTAVE");
-        if (fSm) ImGui::PopFont();
-        // OCT- button
-        DrawPill(dl, omx, oby, obW, obH, im(35,33,50), 10);
-        if (fSm) ImGui::PushFont(fSm);
-        ImVec2 mls = ImGui::CalcTextSize("OCT-");
-        dl->AddText(ImVec2(omx+obW/2-mls.x/2, oby+obH/2-mls.y/2), im(180,170,220), "OCT-");
-        if (fSm) ImGui::PopFont();
-        ImGui::SetCursorScreenPos(ImVec2(omx, oby));
-        ImGui::InvisibleButton("##oct_m", ImVec2(obW, obH));
-        if (!app.showMidi && ImGui::IsItemClicked())
-            for (int t2=0;t2<NUM_TRACKS;++t2) app.tracks[t2].note = std::clamp(app.tracks[t2].note-12,0,127);
-        if (ImGui::IsItemHovered()) dl->AddRect(ImVec2(omx,oby),ImVec2(omx+obW,oby+obH),im(80,75,120),10);
-        // OCT+ button
-        DrawPill(dl, opx, oby, obW, obH, im(35,33,50), 10);
-        if (fSm) ImGui::PushFont(fSm);
-        ImVec2 pls2 = ImGui::CalcTextSize("OCT+");
-        dl->AddText(ImVec2(opx+obW/2-pls2.x/2, oby+obH/2-pls2.y/2), im(180,170,220), "OCT+");
-        if (fSm) ImGui::PopFont();
-        ImGui::SetCursorScreenPos(ImVec2(opx, oby));
-        ImGui::InvisibleButton("##oct_p", ImVec2(obW, obH));
-        if (!app.showMidi && ImGui::IsItemClicked())
-            for (int t2=0;t2<NUM_TRACKS;++t2) app.tracks[t2].note = std::clamp(app.tracks[t2].note+12,0,127);
-        if (ImGui::IsItemHovered()) dl->AddRect(ImVec2(opx,oby),ImVec2(opx+obW,oby+obH),im(80,75,120),10);
+        bool isCT  = app.midi.outName().find("Circuit Tracks") != std::string::npos;
+        bool isCTDrum = isCT && app.ctTrack >= 2;
+        if (isCTDrum) {
+            // Drum page selector instead of octave
+            int pgStart = app.ctDrumPage * 16;
+            char pgLbl[16]; snprintf(pgLbl, sizeof(pgLbl), "%d-%d", pgStart+1, pgStart+16);
+            if (fSm) ImGui::PushFont(fSm);
+            ImVec2 ols = ImGui::CalcTextSize(pgLbl);
+            dl->AddText(ImVec2(cx2 - ols.x/2, octY + octH/2 - ols.y/2), im(200,160,100), pgLbl);
+            if (fSm) ImGui::PopFont();
+            DrawPill(dl, omx, oby, obW, obH, im(35,33,50), 10);
+            if (fSm) ImGui::PushFont(fSm);
+            { ImVec2 s=ImGui::CalcTextSize("PG-"); dl->AddText(ImVec2(omx+obW/2-s.x/2,oby+obH/2-s.y/2),im(180,170,220),"PG-"); }
+            if (fSm) ImGui::PopFont();
+            ImGui::SetCursorScreenPos(ImVec2(omx, oby));
+            ImGui::InvisibleButton("##dpg_m", ImVec2(obW, obH));
+            if (!app.showMidi && ImGui::IsItemClicked()) app.ctDrumPage = std::max(0, app.ctDrumPage-1);
+            if (ImGui::IsItemHovered()) dl->AddRect(ImVec2(omx,oby),ImVec2(omx+obW,oby+obH),im(80,75,120),10);
+            DrawPill(dl, opx, oby, obW, obH, im(35,33,50), 10);
+            if (fSm) ImGui::PushFont(fSm);
+            { ImVec2 s=ImGui::CalcTextSize("PG+"); dl->AddText(ImVec2(opx+obW/2-s.x/2,oby+obH/2-s.y/2),im(180,170,220),"PG+"); }
+            if (fSm) ImGui::PopFont();
+            ImGui::SetCursorScreenPos(ImVec2(opx, oby));
+            ImGui::InvisibleButton("##dpg_p", ImVec2(obW, obH));
+            if (!app.showMidi && ImGui::IsItemClicked()) app.ctDrumPage = std::min(3, app.ctDrumPage+1);
+            if (ImGui::IsItemHovered()) dl->AddRect(ImVec2(opx,oby),ImVec2(opx+obW,oby+obH),im(80,75,120),10);
+        } else {
+            // Normal octave buttons
+            if (fSm) ImGui::PushFont(fSm);
+            ImVec2 ols = ImGui::CalcTextSize("OCTAVE");
+            dl->AddText(ImVec2(cx2 - ols.x/2, octY + octH/2 - ols.y/2), im(120,115,160), "OCTAVE");
+            if (fSm) ImGui::PopFont();
+            DrawPill(dl, omx, oby, obW, obH, im(35,33,50), 10);
+            if (fSm) ImGui::PushFont(fSm);
+            ImVec2 mls = ImGui::CalcTextSize("OCT-");
+            dl->AddText(ImVec2(omx+obW/2-mls.x/2, oby+obH/2-mls.y/2), im(180,170,220), "OCT-");
+            if (fSm) ImGui::PopFont();
+            ImGui::SetCursorScreenPos(ImVec2(omx, oby));
+            ImGui::InvisibleButton("##oct_m", ImVec2(obW, obH));
+            if (!app.showMidi && ImGui::IsItemClicked())
+                for (int t2=0;t2<NUM_TRACKS;++t2) app.tracks[t2].note = std::clamp(app.tracks[t2].note-12,0,127);
+            if (ImGui::IsItemHovered()) dl->AddRect(ImVec2(omx,oby),ImVec2(omx+obW,oby+obH),im(80,75,120),10);
+            DrawPill(dl, opx, oby, obW, obH, im(35,33,50), 10);
+            if (fSm) ImGui::PushFont(fSm);
+            ImVec2 pls2 = ImGui::CalcTextSize("OCT+");
+            dl->AddText(ImVec2(opx+obW/2-pls2.x/2, oby+obH/2-pls2.y/2), im(180,170,220), "OCT+");
+            if (fSm) ImGui::PopFont();
+            ImGui::SetCursorScreenPos(ImVec2(opx, oby));
+            ImGui::InvisibleButton("##oct_p", ImVec2(obW, obH));
+            if (!app.showMidi && ImGui::IsItemClicked())
+                for (int t2=0;t2<NUM_TRACKS;++t2) app.tracks[t2].note = std::clamp(app.tracks[t2].note+12,0,127);
+            if (ImGui::IsItemHovered()) dl->AddRect(ImVec2(opx,oby),ImVec2(opx+obW,oby+obH),im(80,75,120),10);
+        }
     }
     for (int p = 0; p < 16; ++p) {
         int col = p % 4, row = p / 4;
@@ -1535,29 +1729,57 @@ static void renderFrame(App& app) {
         if (sel) DrawGlow(dl, px, py, (float)padS, (float)padS, tc, 4, 8);
         if (fl) DrawGlow(dl, px, py, (float)padS, (float)padS, tc, 5*flt, 8);
 
-        // Pad name
+        // Pad name / note label
+        bool hasMidiOut = app.midi.curOut() >= 0;
+        bool isCTDrumPad = hasMidiOut &&
+            app.midi.outName().find("Circuit Tracks") != std::string::npos &&
+            app.ctTrack >= 2;
+        std::string nn = noteName(app.tracks[p].note);
+        char patchNumBuf[8];
+        if (isCTDrumPad) snprintf(patchNumBuf, sizeof(patchNumBuf), "%d", app.ctDrumPage*16 + p);
+        const char* mainLabel = isCTDrumPad ? patchNumBuf
+                              : hasMidiOut  ? nn.c_str()
+                              : app.tracks[p].name.c_str();
+        // Highlight pads whose stored patch matches the current page
+        bool isPatchSel = isCTDrumPad && (app.tracks[p].synthP[0] == app.ctDrumPage*16 + p);
         if (fSm) ImGui::PushFont(fSm);
-        ImVec2 ns = ImGui::CalcTextSize(app.tracks[p].name.c_str());
+        ImVec2 ns = ImGui::CalcTextSize(mainLabel);
         ImGui::PushClipRect(ImVec2(px+2,py), ImVec2(px+padS-2,py+padS), true);
         dl->AddText(ImVec2(px + padS/2.f - std::min(ns.x,(float)padS-6)/2.f, py + padS*0.38f - ns.y/2.f),
-                    fl ? im(255,255,255) : (sel ? im(240,240,250) : im(180,180,200)), app.tracks[p].name.c_str());
+                    fl ? im(255,255,255) : (isPatchSel ? im(255,220,100) : (sel ? im(240,240,250) : im(180,180,200))), mainLabel);
+        // Sub-label: stored patch value for CT drum pads, else track name in MIDI mode
+        if (isCTDrumPad) {
+            if (fTiny) { ImGui::PopFont(); ImGui::PushFont(fTiny); }
+            char storedBuf[16]; snprintf(storedBuf, sizeof(storedBuf), "[%d]", app.tracks[p].synthP[0]);
+            ImVec2 dns = ImGui::CalcTextSize(storedBuf);
+            dl->AddText(ImVec2(px + padS/2.f - std::min(dns.x,(float)padS-6)/2.f, py + padS*0.62f - dns.y/2.f),
+                        withA(tc, sel?90:55), storedBuf);
+            if (fTiny) { ImGui::PopFont(); ImGui::PushFont(fSm); }
+        } else if (hasMidiOut) {
+            if (fTiny) { ImGui::PopFont(); ImGui::PushFont(fTiny); }
+            ImVec2 dns = ImGui::CalcTextSize(app.tracks[p].name.c_str());
+            dl->AddText(ImVec2(px + padS/2.f - std::min(dns.x,(float)padS-6)/2.f, py + padS*0.62f - dns.y/2.f),
+                        withA(tc, sel?70:40), app.tracks[p].name.c_str());
+            if (fTiny) { ImGui::PopFont(); ImGui::PushFont(fSm); }
+        }
         ImGui::PopClipRect();
         if (fSm) ImGui::PopFont();
 
-        // Pad number + note
+        // Pad number + note (bottom strip)
         if (fTiny) ImGui::PushFont(fTiny);
         char pn[4]; snprintf(pn, sizeof(pn), "%d", p+1);
         dl->AddText(ImVec2(px+4, py+padS-13), withA(tc, sel?110:50), pn);
-        std::string nn = noteName(app.tracks[p].note);
-        ImVec2 nns = ImGui::CalcTextSize(nn.c_str());
-        dl->AddText(ImVec2(px+padS-nns.x-3, py+padS-13), withA(tc, sel?90:45), nn.c_str());
+        if (!hasMidiOut) {
+            ImVec2 nns = ImGui::CalcTextSize(nn.c_str());
+            dl->AddText(ImVec2(px+padS-nns.x-3, py+padS-13), withA(tc, sel?90:45), nn.c_str());
+        }
         if (fTiny) ImGui::PopFont();
 
         ImGui::SetCursorScreenPos(ImVec2(px,py));
         char pid[16]; snprintf(pid,sizeof(pid),"##pad%d",p);
         ImGui::InvisibleButton(pid, ImVec2((float)padS,(float)padS));
         // Press: start hold timer
-        if (!app.showMidi && !app.showPadEdit && ImGui::IsItemHovered() && ImGui::IsMouseClicked(0)) {
+        if (!app.showMidi && !app.showPadEdit && !ctDropOpen && !pgDropOpen && ImGui::IsItemHovered() && ImGui::IsMouseClicked(0)) {
             app.padHoldT = p;
             app.padHoldStart = ImGui::GetTime();
             app.padHoldTriggered = false;
@@ -1574,9 +1796,23 @@ static void renderFrame(App& app) {
         if (app.padHoldT == p && ImGui::IsMouseReleased(0)) {
             if (!app.padHoldTriggered && !app.showMidi) {
                 app.selTrk = p; app.padFlash[p] = now;
-                app.midi.noteOn(app.midiCh, app.tracks[p].note, app.tracks[p].vel);
-                app.pendingOffs.push_back({app.midiCh, app.tracks[p].note, now + 0.15});
-                if (app.midi.synthEnabled()) synthTrigger(app, p, (float)app.tracks[p].vel);
+                if (isCTDrumPad) {
+                    int patchVal = app.ctDrumPage * 16 + p;
+                    app.tracks[p].synthP[0] = patchVal;
+                    int drumIdx = app.ctTrack - 2;
+                    int drumNote = app.tracks[p].note;
+                    // NoteOff first to clear voice, then select patch via CC, then fire
+                    app.midi.noteOff(9, drumNote);
+                    app.midi.sendCC(9, CT_DRUM_CC[drumIdx][0], patchVal);
+                    app.midi.noteOn(9, drumNote, app.tracks[p].vel);
+                    fprintf(stderr, "[CT DRUM tap ] drumIdx=%d CC=%d patch=%d note=%d\n",
+                        drumIdx, CT_DRUM_CC[drumIdx][0], patchVal, drumNote);
+                    app.pendingOffs.push_back({9, drumNote, now + 0.15});
+                } else {
+                    app.midi.noteOn(app.midiCh, app.tracks[p].note, app.tracks[p].vel);
+                    app.pendingOffs.push_back({app.midiCh, app.tracks[p].note, now + 0.15});
+                    if (app.midi.synthEnabled()) synthTrigger(app, p, (float)app.tracks[p].vel);
+                }
             }
             app.padHoldT = -1;
         }
@@ -1585,7 +1821,7 @@ static void renderFrame(App& app) {
         }
     }
 
-    // ── Synth page tabs (left panel, below pads — 2×2 grid) ──
+    // ── Bottom strip: CT track dropdown + param page dropdown ──
     {
         ImU32 ttc = TCLR[app.selTrk];
         Track& tst = app.tracks[app.selTrk];
@@ -1593,44 +1829,196 @@ static void renderFrame(App& app) {
         GradV(dl, ImVec2(0,tlY), ImVec2(leftW,H-statusH), im(14,13,22), im(10,9,17));
         dl->AddLine(ImVec2(0,tlY), ImVec2(leftW,tlY), im(50,45,70));
 
-        // Track name + note info
-        if (fSm) ImGui::PushFont(fSm);
-        char tlab[48]; snprintf(tlab,sizeof(tlab),"%s  CH %d  %s",
-            tst.name.c_str(), app.midiCh+1, noteName(tst.note).c_str());
-        ImVec2 tlabs = ImGui::CalcTextSize(tlab);
-        dl->AddText(ImVec2(leftW/2-tlabs.x/2, tlY+7), ttc, tlab);
-        if (fSm) ImGui::PopFont();
+        bool isCT   = app.midi.curOut() >= 0 &&
+                      app.midi.outName().find("Circuit Tracks") != std::string::npos;
+        bool isCTDr = isCT && app.ctTrack >= 2;
 
-        // 4 tabs in 2×2 grid — fills remaining left panel height
-        float tabPad = 6, tabGap = 5;
-        float tW = (leftW - 2*tabPad - tabGap) / 2.f;
-        float availH = H - statusH - (tlY + 28);
-        float tH2 = (availH - tabGap) / 2.f;
-        if (tH2 > 52) tH2 = 52;
-        static const char* tabLabelsSynth[4] = {"SYNTH","EXT","FX","FX2"};
-        static const char* tabLabelsMidi[4]  = {"Page 1","Page 2","Page 3","Page 4"};
-        const char** tabLabels = app.midi.curOut() >= 0 ? tabLabelsMidi : tabLabelsSynth;
-        for (int pg = 0; pg < 4; ++pg) {
-            int col = pg % 2, row = pg / 2;
-            float tx = tabPad + col * (tW + tabGap);
-            float ty = tlY + 28 + row * (tH2 + tabGap);
-            bool tsel = (app.synthPage == pg);
-            ImU32 tbg = tsel ? dimC(ttc,0.45f) : im(20,18,32);
-            dl->AddRectFilled(ImVec2(tx,ty),ImVec2(tx+tW,ty+tH2),tbg,8);
-            dl->AddRect(ImVec2(tx,ty),ImVec2(tx+tW,ty+tH2),
-                tsel?withA(ttc,160):im(40,38,55),8);
-            if (tsel) dl->AddRectFilled(ImVec2(tx+2,ty+1),ImVec2(tx+tW-2,ty+2),withA(ttc,40),1);
+        // ctDropOpen / pgDropOpen declared in outer scope above — sync with popup state
+        ctDropOpen = ImGui::IsPopupOpen("##ctpop");
+        pgDropOpen = ImGui::IsPopupOpen("##pgpop");
+
+        static const char* ctNames[]  = {"(none)","SY 1","SY 2","DR 1","DR 2","DR 3","DR 4"};
+        static const int CT_DRUM_NOTES[4] = {60, 62, 64, 65};
+        static const char* pgSynth[]  = {"SYNTH","EXT","FX","FX2"};
+        static const char* pgMidi[]   = {"Page 1","Page 2","Page 3","Page 4"};
+        static const char* pgDrum[]   = {"CTRL 1","CTRL 2"};
+
+        const float dh   = 36.f;
+        const float dpad = 6.f;
+        float bx   = dpad, bw = leftW - 2*dpad;
+        float row1Y = tlY + 8.f;
+        float row2Y = row1Y + dh + dpad;
+
+        // ── Row 1: CT track dropdown (CT only) or track info label ──
+        if (isCT) {
+            int ctIdx = app.ctTrack + 1;
+            DrawPill(dl, bx, row1Y, bw, dh,
+                ctDropOpen ? im(40,35,65) : im(22,20,36), 8);
+            dl->AddRect(ImVec2(bx,row1Y),ImVec2(bx+bw,row1Y+dh),
+                ctDropOpen ? im(110,100,180) : im(50,46,72), 8, 0, 1.2f);
             if (fSm) ImGui::PushFont(fSm);
-            ImVec2 tls2 = ImGui::CalcTextSize(tabLabels[pg]);
-            dl->AddText(ImVec2(tx+tW/2-tls2.x/2, ty+tH2/2-tls2.y/2),
-                tsel?im(255,255,255):im(80,75,110), tabLabels[pg]);
+            { char lbl[24]; snprintf(lbl,sizeof(lbl),"TRACK: %s",ctNames[ctIdx]);
+              ImVec2 ls=ImGui::CalcTextSize(lbl);
+              dl->AddText(ImVec2(bx+12,row1Y+dh/2-ls.y/2),im(180,175,225),lbl); }
+            { ImVec2 as=ImGui::CalcTextSize("v");
+              dl->AddText(ImVec2(bx+bw-as.x-10,row1Y+dh/2-as.y/2),im(130,125,170),"v"); }
             if (fSm) ImGui::PopFont();
-            char tabId[16]; snprintf(tabId,sizeof(tabId),"##sptab%d",pg);
-            ImGui::SetCursorScreenPos(ImVec2(tx,ty));
-            ImGui::InvisibleButton(tabId,ImVec2(tW,tH2));
-            if (!app.showMidi&&ImGui::IsItemClicked()) app.synthPage=pg;
+            ImGui::SetCursorScreenPos(ImVec2(bx,row1Y));
+            ImGui::InvisibleButton("##ctdrop_btn",ImVec2(bw,dh));
+            if (!app.showMidi && ImGui::IsItemClicked())
+                ImGui::OpenPopup("##ctpop");
+
+            // Position popup: prefer below, flip above if off-screen
+            const int nI = 7;
+            const float lh = 34.f;
+            float totalH = nI*lh + 8;
+            float ly = row1Y + dh + 2;
+            if (ly + totalH > H - statusH) ly = row1Y - totalH - 2;
+            ImGui::SetNextWindowPos(ImVec2(bx, ly));
+            ImGui::SetNextWindowSize(ImVec2(bw, totalH));
+            ImGui::SetNextWindowBgAlpha(0.f);
+            if (ImGui::BeginPopup("##ctpop",
+                    ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove |
+                    ImGuiWindowFlags_NoScrollbar  | ImGuiWindowFlags_NoScrollWithMouse)) {
+                ImDrawList* pdl = ImGui::GetWindowDrawList();
+                pdl->AddRectFilled(ImVec2(bx,ly),ImVec2(bx+bw,ly+totalH),im(28,26,44,250),8);
+                pdl->AddRect      (ImVec2(bx,ly),ImVec2(bx+bw,ly+totalH),im(80,75,120),8);
+                for (int i=0; i<nI; ++i) {
+                    float iy = ly + 4 + i*lh;
+                    bool isSel = (app.ctTrack+1 == i);
+                    ImGui::SetCursorScreenPos(ImVec2(bx+2, iy));
+                    char iid[24]; snprintf(iid,sizeof(iid),"##ctitem%d",i);
+                    ImGui::InvisibleButton(iid, ImVec2(bw-4, lh-1));
+                    bool isHov = ImGui::IsItemHovered();
+                    if (isSel)      pdl->AddRectFilled(ImVec2(bx+2,iy),ImVec2(bx+bw-2,iy+lh-1),im(45,42,80),6);
+                    else if (isHov) pdl->AddRectFilled(ImVec2(bx+2,iy),ImVec2(bx+bw-2,iy+lh-1),im(38,35,60),6);
+                    if (fSm) ImGui::PushFont(fSm);
+                    ImVec2 ts=ImGui::CalcTextSize(ctNames[i]);
+                    pdl->AddText(ImVec2(bx+14, iy+lh/2-ts.y/2),
+                        isSel ? im(255,255,255) : im(170,165,210), ctNames[i]);
+                    if (fSm) ImGui::PopFont();
+                    if (ImGui::IsItemClicked()) {
+                        app.ctTrack = i - 1;
+                        if (app.ctTrack == -1) {
+                            // (none) — restore default notes/channels
+                            app.midiCh = 9;
+                            for (int t = 0; t < NUM_TRACKS; ++t) {
+                                app.tracks[t].ch   = TDEFS[t].note < 0 ? 9 : 9;
+                                app.tracks[t].note = TDEFS[t].note;
+                            }
+                            app.synthPage = 0; app.ctDrumPage = 0;
+                        } else if (app.ctTrack == 0) {
+                            app.midiCh = 0;
+                            // Restore default notes; channel set to MIDI ch1 for all
+                            for (int t = 0; t < NUM_TRACKS; ++t) {
+                                app.tracks[t].ch   = 0;
+                                app.tracks[t].note = TDEFS[t].note;
+                            }
+                            app.synthPage = 0; app.ctDrumPage = 0;
+                        } else if (app.ctTrack == 1) {
+                            app.midiCh = 1;
+                            for (int t = 0; t < NUM_TRACKS; ++t) {
+                                app.tracks[t].ch   = 1;
+                                app.tracks[t].note = TDEFS[t].note;
+                            }
+                            app.synthPage = 0; app.ctDrumPage = 0;
+                        } else if (app.ctTrack >= 2) {
+                            app.midiCh = 9;
+                            app.synthPage = 0; app.ctDrumPage = 0;
+                            // All pads trigger the same drum note for the selected drum voice
+                            int drumNote = CT_DRUM_NOTES[app.ctTrack - 2];
+                            for (int t = 0; t < NUM_TRACKS; ++t) {
+                                app.tracks[t].ch   = 9;
+                                app.tracks[t].note = drumNote;
+                            }
+                        }
+                        ImGui::CloseCurrentPopup();
+                    }
+                }
+                ImGui::EndPopup();
+            }
+        } else {
+            // No CT output — show track name/note info only
+            if (fSm) ImGui::PushFont(fSm);
+            char tlab[48]; snprintf(tlab,sizeof(tlab),"%s  CH %d  %s",
+                tst.name.c_str(), app.midiCh+1, noteName(tst.note).c_str());
+            ImVec2 tlabs=ImGui::CalcTextSize(tlab);
+            dl->AddText(ImVec2(leftW/2-tlabs.x/2, row1Y+dh/2-7), ttc, tlab);
+            if (fSm) ImGui::PopFont();
+        }
+
+        // ── Row 2: Param page dropdown ──
+        {
+            // CT drum: no page selector (all 9 shown at once); CT synth: 6 named pages; generic: 6 pages
+            bool isCTSy = isCT && app.ctTrack >= 0 && app.ctTrack <= 1;
+            bool isMF   = !isCT && app.midi.curOut() >= 0 &&
+                          app.midi.outName().find("MicroFreak") != std::string::npos;
+            const char** pgNames;
+            int nPages;
+            int& curPg = app.synthPage;
+            if (isCTDr) {
+                // Drums: no page needed — hide the dropdown row
+                pgNames = nullptr; nPages = 0;
+            } else if (isCTSy) {
+                pgNames = CT_SYNTH_PAGE_NAMES; nPages = 19;
+            } else if (isMF) {
+                pgNames = MF_PAGE_NAMES; nPages = 4;
+            } else {
+                pgNames = (app.midi.curOut()>=0 ? pgMidi : pgSynth); nPages = 4;
+            }
+            if (curPg >= nPages && nPages > 0) curPg = 0;
+
+            if (nPages > 0) {
+            DrawPill(dl, bx, row2Y, bw, dh,
+                pgDropOpen ? im(40,35,65) : im(22,20,36), 8);
+            dl->AddRect(ImVec2(bx,row2Y),ImVec2(bx+bw,row2Y+dh),
+                pgDropOpen ? withA(ttc,200) : im(50,46,72), 8, 0, 1.2f);
+            if (fSm) ImGui::PushFont(fSm);
+            { char lbl[28]; snprintf(lbl,sizeof(lbl),"PARAMS: %s",pgNames[curPg]);
+              ImVec2 ls=ImGui::CalcTextSize(lbl);
+              dl->AddText(ImVec2(bx+12,row2Y+dh/2-ls.y/2),im(180,175,225),lbl); }
+            { ImVec2 as=ImGui::CalcTextSize("v");
+              dl->AddText(ImVec2(bx+bw-as.x-10,row2Y+dh/2-as.y/2),im(130,125,170),"v"); }
+            if (fSm) ImGui::PopFont();
+            ImGui::SetCursorScreenPos(ImVec2(bx,row2Y));
+            ImGui::InvisibleButton("##pgdrop_btn",ImVec2(bw,dh));
+            if (!app.showMidi && ImGui::IsItemClicked())
+                ImGui::OpenPopup("##pgpop");
+
+            const float lh = 34.f;
+            float totalH = nPages*lh + 8;
+            float ly = row2Y + dh + 2;
+            if (ly + totalH > H - statusH) ly = row2Y - totalH - 2;
+            ImGui::SetNextWindowPos(ImVec2(bx, ly));
+            ImGui::SetNextWindowSize(ImVec2(bw, totalH));
+            ImGui::SetNextWindowBgAlpha(0.f);
+            if (ImGui::BeginPopup("##pgpop",
+                    ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove |
+                    ImGuiWindowFlags_NoScrollbar  | ImGuiWindowFlags_NoScrollWithMouse)) {
+                ImDrawList* pdl = ImGui::GetWindowDrawList();
+                pdl->AddRectFilled(ImVec2(bx,ly),ImVec2(bx+bw,ly+totalH),im(28,26,44,250),8);
+                pdl->AddRect      (ImVec2(bx,ly),ImVec2(bx+bw,ly+totalH),im(80,75,120),8);
+                for (int i=0; i<nPages; ++i) {
+                    float iy = ly + 4 + i*lh;
+                    bool isSel = (curPg == i);
+                    ImGui::SetCursorScreenPos(ImVec2(bx+2, iy));
+                    char pgid[24]; snprintf(pgid,sizeof(pgid),"##pgitem%d",i);
+                    ImGui::InvisibleButton(pgid, ImVec2(bw-4, lh-1));
+                    bool isHov = ImGui::IsItemHovered();
+                    if (isSel)      pdl->AddRectFilled(ImVec2(bx+2,iy),ImVec2(bx+bw-2,iy+lh-1),im(45,42,80),6);
+                    else if (isHov) pdl->AddRectFilled(ImVec2(bx+2,iy),ImVec2(bx+bw-2,iy+lh-1),im(38,35,60),6);
+                    if (fSm) ImGui::PushFont(fSm);
+                    ImVec2 ts=ImGui::CalcTextSize(pgNames[i]);
+                    pdl->AddText(ImVec2(bx+14, iy+lh/2-ts.y/2),
+                        isSel ? im(255,255,255) : im(170,165,210), pgNames[i]);
+                    if (fSm) ImGui::PopFont();
+                    if (ImGui::IsItemClicked()) { curPg = i; ImGui::CloseCurrentPopup(); }
+                }
+                ImGui::EndPopup();
+            }
         }
     }
+    }   // ── end Bottom strip block
 
     // ═══════════════════ SEQUENCER AREA ═════════════════════════════
     GradV(dl, ImVec2(divX+1, contentY), ImVec2(W, H-statusH), im(14,13,21), im(10,9,16));
@@ -2039,90 +2427,241 @@ static void renderFrame(App& app) {
         GradV(dl, ImVec2(spX, spY), ImVec2(W, spY+spH), im(18,17,28), im(12,11,20));
         dl->AddLine(ImVec2(spX, spY), ImVec2(W, spY), im(40,38,58));
 
-        // ── 6 synth parameters in 2 columns of 3 (paged) ──
-        const float tH = 0.f;
-        float paramY0 = spY + 6;
-        float colW = (spW - 24) / 2.f;             // two columns with margins
-        float paramRH = (spH - tH - 12) / 3.f;     // 3 rows
-        if (paramRH > 36) paramRH = 36;
+        bool isCT2   = app.midi.curOut() >= 0 &&
+                        app.midi.outName().find("Circuit Tracks") != std::string::npos;
+        bool isCTDr2 = isCT2 && app.ctTrack >= 2;
+        bool isCTSy2 = isCT2 && app.ctTrack >= 0 && app.ctTrack <= 1;
+        int  ctDrumIdx2 = app.ctTrack - 2; // 0-3 when isCTDr2
+        bool isMF2  = !isCT2 && app.midi.curOut() >= 0 &&
+                      app.midi.outName().find("MicroFreak") != std::string::npos;
 
-        int pageOff = app.synthPage * SYNTH_PARAMS_PER_PAGE;
-        for (int pi = 0; pi < SYNTH_PARAMS_PER_PAGE; ++pi) {
-            int actualIdx = pageOff + pi;
-            int col = pi / 3;
-            int row = pi % 3;
-            float cx = spX + 8 + col * (colW + 8);
-            float cy = paramY0 + row * paramRH;
+        // ── CT DRUM: 3-column × 3-row grid, all 9 params on one panel ──
+        if (isCTDr2) {
+            const int CT_DRUM_TOTAL = 9;
+            const int CT_DRUM_COLS  = 3;
+            const int CT_DRUM_ROWS  = 3;
+            float colW3 = (spW - (CT_DRUM_COLS+1)*8.f) / CT_DRUM_COLS;
+            float paramRH3 = (spH - 12.f) / CT_DRUM_ROWS;
+            if (paramRH3 > 36) paramRH3 = 36;
+            float paramY0 = spY + 6;
 
-            // Zebra stripe
-            if (row % 2 == 0)
-                dl->AddRectFilled(ImVec2(cx-2, cy), ImVec2(cx+colW+2, cy+paramRH-2), im(20,18,32,120), 3);
+            for (int pi = 0; pi < CT_DRUM_TOTAL; ++pi) {
+                int col = pi % CT_DRUM_COLS;
+                int row = pi / CT_DRUM_COLS;
+                float cx = spX + 8 + col * (colW3 + 8);
+                float cy = paramY0 + row * paramRH3;
 
-            const char* pname =
-                app.synthPage == 0 ? SYNTH_PNAMES[dt][pi] :
-                app.synthPage == 1 ? SYNTH_PNAMES_EXT[dt][pi] :
-                app.synthPage == 2 ? SYNTH_PNAMES_P2[pi] :
-                                     SYNTH_PNAMES_P3[pi];
-            int& pval = st.synthP[actualIdx];
+                if (row % 2 == 0)
+                    dl->AddRectFilled(ImVec2(cx-2,cy),ImVec2(cx+colW3+2,cy+paramRH3-2),im(20,18,32,120),3);
 
-            // Label — show CC number when MIDI in is connected
-            char ccLabel[8];
-            const char* labelStr = pname;
-            if (app.midi.curOut() >= 0) {
-                snprintf(ccLabel, sizeof(ccLabel), "CC%d", SYNTH_CC[actualIdx]);
-                labelStr = ccLabel;
-            }
-            if (fSm) ImGui::PushFont(fSm);
-            dl->AddText(ImVec2(cx+2, cy+paramRH/2-7), im(210,195,255), labelStr);
-            if (fSm) ImGui::PopFont();
+                const char* pname = CT_DRUM_PNAMES[pi];
+                int& pval = st.synthP[pi]; // reuse synthP[0..8] for drum params
+                // PATCH (pi==0) valid range is 0-63; clamp stored value
+                const int pmax = (pi == 0) ? 63 : 127;
+                pval = std::min(pval, pmax);
 
-            // Value text
-            if (fTiny) ImGui::PushFont(fTiny);
-            char pvs[8]; snprintf(pvs, sizeof(pvs), "%d", pval);
-            ImVec2 pvSz = ImGui::CalcTextSize(pvs);
-            dl->AddText(ImVec2(cx+colW-pvSz.x-2, cy+paramRH/2-6), im(200,195,230), pvs);
-            if (fTiny) ImGui::PopFont();
+                if (fSm) ImGui::PushFont(fSm);
+                dl->AddText(ImVec2(cx+2, cy+paramRH3/2-7), im(210,195,255), pname);
+                if (fSm) ImGui::PopFont();
 
-            // Slider
-            float lblOff = 56;    // label width
-            float valOff = 32;    // value width on right
-            float slx = cx + lblOff;
-            float slw = colW - lblOff - valOff;
-            float slh = 14;
-            float sly = cy + paramRH/2 - slh/2;
+                if (fTiny) ImGui::PushFont(fTiny);
+                char pvs[8]; snprintf(pvs,sizeof(pvs),"%d",pval);
+                ImVec2 pvSz = ImGui::CalcTextSize(pvs);
+                dl->AddText(ImVec2(cx+colW3-pvSz.x-2, cy+paramRH3/2-6), im(200,195,230), pvs);
+                if (fTiny) ImGui::PopFont();
 
-            // Track
-            dl->AddRectFilled(ImVec2(slx, sly), ImVec2(slx+slw, sly+slh), im(14,12,24), 7);
-            dl->AddRect(ImVec2(slx, sly), ImVec2(slx+slw, sly+slh), im(30,28,45), 7);
+                float lblOff = 48.f, valOff = 28.f;
+                float slx = cx + lblOff;
+                float slw = colW3 - lblOff - valOff;
+                float slh = 14;
+                float sly = cy + paramRH3/2 - slh/2;
 
-            // Fill
-            float fillFrac = (float)pval / 127.f;
-            float fillW = fillFrac * (slw - 4);
-            if (fillW > 0) {
-                ImU32 fL = dimC(ac, 0.35f);
-                ImU32 fR = dimC(ac, 0.85f);
-                GradH(dl, ImVec2(slx+2, sly+2), ImVec2(slx+2+fillW, sly+slh-2), fL, fR);
-            }
+                dl->AddRectFilled(ImVec2(slx,sly),ImVec2(slx+slw,sly+slh),im(14,12,24),7);
+                dl->AddRect      (ImVec2(slx,sly),ImVec2(slx+slw,sly+slh),im(30,28,45),7);
+                float fillFrac = (float)pval / (float)pmax;
+                float fillW = fillFrac * (slw-4);
+                if (fillW>0) GradH(dl,ImVec2(slx+2,sly+2),ImVec2(slx+2+fillW,sly+slh-2),dimC(ac,0.35f),dimC(ac,0.85f));
+                float knobX = slx+2+fillW;
+                dl->AddCircleFilled(ImVec2(knobX,sly+slh/2),5.5f,im(210,205,235));
+                dl->AddCircle      (ImVec2(knobX,sly+slh/2),5.5f,withA(ac,140),12,1.2f);
 
-            // Knob
-            float knobX = slx + 2 + fillW;
-            dl->AddCircleFilled(ImVec2(knobX, sly+slh/2), 5.5f, im(210,205,235));
-            dl->AddCircle(ImVec2(knobX, sly+slh/2), 5.5f, withA(ac,140), 12, 1.2f);
-
-            // Interaction
-            char spid[24]; snprintf(spid, sizeof(spid), "##sp%d", actualIdx);
-            ImGui::SetCursorScreenPos(ImVec2(slx-4, sly-4));
-            ImGui::InvisibleButton(spid, ImVec2(slw+8, slh+8));
-            if (!app.showMidi && ImGui::IsItemActive()) {
-                float rel = (io.MousePos.x - slx - 2) / (slw - 4);
-                int nv = std::clamp((int)(rel * 127), 0, 127);
-                if (nv != pval) {
-                    pval = nv;
-                    app.midi.sendCC(app.midiCh, SYNTH_CC[actualIdx], pval);
+                char spid[24]; snprintf(spid,sizeof(spid),"##dsp%d",pi);
+                ImGui::SetCursorScreenPos(ImVec2(slx-4,sly-16));
+                ImGui::InvisibleButton(spid,ImVec2(slw+8,slh+32));
+                if (!app.showMidi && ImGui::IsItemActive()) {
+                    float rel = (io.MousePos.x - slx - 2) / (slw - 4);
+                    int nv = std::clamp((int)(rel * pmax), 0, pmax);
+                    if (nv != pval) {
+                        pval = nv;
+                        int sendCh  = CT_DRUM_PARAM_CH[pi];
+                        int sendCC  = CT_DRUM_CC[ctDrumIdx2][pi];
+                        app.midi.sendCC(sendCh, sendCC, pval);
+                    }
+                }
+                if (ImGui::IsItemHovered()) {
+                    ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
+                    dl->AddRect(ImVec2(slx-1,sly-1),ImVec2(slx+slw+1,sly+slh+1),withA(ac,80),8);
                 }
             }
-            if (ImGui::IsItemHovered()) {
-                dl->AddRect(ImVec2(slx-1, sly-1), ImVec2(slx+slw+1, sly+slh+1), withA(ac,80), 8);
+        } else {
+            // ── SYNTH / generic paged panel ──
+            const float tH = 0.f;
+            float paramY0 = spY + 6;
+            float colW = (spW - 24) / 2.f;
+            float paramRH = (spH - tH - 12) / 3.f;
+            if (paramRH > 36) paramRH = 36;
+
+            int pageOff = app.synthPage * SYNTH_PARAMS_PER_PAGE;
+            for (int pi = 0; pi < SYNTH_PARAMS_PER_PAGE; ++pi) {
+                int actualIdx = pageOff + pi;
+                int col = pi / 3;
+                int row = pi % 3;
+                float cx = spX + 8 + col * (colW + 8);
+                float cy = paramY0 + row * paramRH;
+
+                if (row % 2 == 0)
+                    dl->AddRectFilled(ImVec2(cx-2,cy),ImVec2(cx+colW+2,cy+paramRH-2),im(20,18,32,120),3);
+
+                const char* pname;
+                char ccLabel[16];
+                const char* labelStr;
+                if (isMF2 && MF_CC[app.synthPage][pi] < 0) continue; // skip unused MF slot
+                bool isCTModPage = isCTSy2 && app.synthPage >= 9;
+                if (isCTModPage && pi >= 4) continue; // only 4 params on MOD pages
+                if (isCTSy2) {
+                    // CT synth: CC pages 0-8, NRPN mod pages 9-18
+                    pname = isCTModPage ? CT_MOD_PNAMES[pi] : CT_SYNTH_PNAMES[app.synthPage][pi];
+                    labelStr = pname;
+                } else if (isMF2) {
+                    // MicroFreak: use MF-specific names
+                    pname = MF_PNAMES[app.synthPage][pi];
+                    // Show oscillator type label for OSC page, TYPE param
+                    if (app.synthPage == 0 && pi == 0) {
+                        int oscType = st.synthP[0];
+                        labelStr = MF_OSC_TYPE_NAMES[std::clamp(oscType,0,(int)(sizeof(MF_OSC_TYPE_NAMES)/sizeof(MF_OSC_TYPE_NAMES[0])-1))];
+                    } else {
+                        labelStr = pname;
+                    }
+                } else if (app.midi.curOut() >= 0) {
+                    // Generic MIDI out: show CC numbers
+                    snprintf(ccLabel, sizeof(ccLabel), "CC%d", SYNTH_CC[actualIdx]);
+                    labelStr = ccLabel;
+                    pname = ccLabel;
+                } else {
+                    // Internal synth: use synth type names
+                    pname = app.synthPage == 0 ? SYNTH_PNAMES[dt][pi] :
+                            app.synthPage == 1 ? SYNTH_PNAMES_EXT[dt][pi] :
+                            app.synthPage == 2 ? SYNTH_PNAMES_P2[pi] :
+                                                 SYNTH_PNAMES_P3[pi];
+                    labelStr = pname;
+                }
+                int& pval = st.synthP[actualIdx];
+
+                // MOD pages: SRC/DEST use < > picker, DEPTH uses slider
+                if (isCTModPage && pi != 2) {
+                    int maxVal = (pi == 3) ? 17 : 12; // DEST 0-17, SRC 0-12
+                    pval = std::clamp(pval, 0, maxVal);
+                    const char* valLbl = (pi == 3) ? CT_MOD_DEST[pval] : CT_MOD_SRC[pval];
+                    // label
+                    if (fSm) ImGui::PushFont(fSm);
+                    ImVec2 lbs = ImGui::CalcTextSize(labelStr);
+                    dl->AddText(ImVec2(cx+2, cy+paramRH/2-lbs.y/2), im(210,195,255), labelStr);
+                    if (fSm) ImGui::PopFont();
+                    // < button
+                    float bW = 22.f, bH = 20.f;
+                    float bY = cy + paramRH/2 - bH/2;
+                    float lbx = cx + 54;
+                    float rbx = cx + colW - bW - 2;
+                    bool lhv = ImGui::IsMouseHoveringRect(ImVec2(lbx,bY),ImVec2(lbx+bW,bY+bH),false);
+                    bool rhv = ImGui::IsMouseHoveringRect(ImVec2(rbx,bY),ImVec2(rbx+bW,bY+bH),false);
+                    dl->AddRectFilled(ImVec2(lbx,bY),ImVec2(lbx+bW,bY+bH),lhv?im(55,50,80):im(28,26,44),6);
+                    dl->AddRectFilled(ImVec2(rbx,bY),ImVec2(rbx+bW,bY+bH),rhv?im(55,50,80):im(28,26,44),6);
+                    if (fBd) ImGui::PushFont(fBd);
+                    ImVec2 lcs=ImGui::CalcTextSize("<"),rcs=ImGui::CalcTextSize(">");
+                    dl->AddText(ImVec2(lbx+bW/2-lcs.x/2,bY+bH/2-lcs.y/2),lhv?im(230,225,255):im(130,125,165),"<");
+                    dl->AddText(ImVec2(rbx+bW/2-rcs.x/2,bY+bH/2-rcs.y/2),rhv?im(230,225,255):im(130,125,165),">");
+                    if (fBd) ImGui::PopFont();
+                    // value label centered between buttons
+                    if (fTiny) ImGui::PushFont(fTiny);
+                    ImVec2 vls = ImGui::CalcTextSize(valLbl);
+                    float midX = lbx + bW + (rbx - lbx - bW)/2.f;
+                    dl->AddText(ImVec2(midX - vls.x/2, cy+paramRH/2-vls.y/2), im(220,215,245), valLbl);
+                    if (fTiny) ImGui::PopFont();
+                    // hit areas
+                    char lid[24], rid[24];
+                    snprintf(lid,sizeof(lid),"##ml%d_%d",actualIdx,pi);
+                    snprintf(rid,sizeof(rid),"##mr%d_%d",actualIdx,pi);
+                    ImGui::SetCursorScreenPos(ImVec2(lbx,bY)); ImGui::InvisibleButton(lid,ImVec2(bW,bH));
+                    if (!app.showMidi && ImGui::IsItemClicked()) {
+                        pval = std::clamp(pval-1,0,maxVal);
+                        int slot=app.synthPage-9;
+                        app.midi.sendNRPN(app.midiCh,CT_MOD_NRPN[slot][pi][0],CT_MOD_NRPN[slot][pi][1],pval);
+                    }
+                    ImGui::SetCursorScreenPos(ImVec2(rbx,bY)); ImGui::InvisibleButton(rid,ImVec2(bW,bH));
+                    if (!app.showMidi && ImGui::IsItemClicked()) {
+                        pval = std::clamp(pval+1,0,maxVal);
+                        int slot=app.synthPage-9;
+                        app.midi.sendNRPN(app.midiCh,CT_MOD_NRPN[slot][pi][0],CT_MOD_NRPN[slot][pi][1],pval);
+                    }
+                    continue;
+                }
+
+                if (fSm) ImGui::PushFont(fSm);
+                dl->AddText(ImVec2(cx+2, cy+paramRH/2-7), im(210,195,255), labelStr);
+                if (fSm) ImGui::PopFont();
+
+                if (fTiny) ImGui::PushFont(fTiny);
+                char pvs[8]; snprintf(pvs,sizeof(pvs),"%d",pval);
+                ImVec2 pvSz = ImGui::CalcTextSize(pvs);
+                dl->AddText(ImVec2(cx+colW-pvSz.x-2, cy+paramRH/2-6), im(200,195,230), pvs);
+                if (fTiny) ImGui::PopFont();
+
+                float lblOff = 56.f, valOff = 32.f;
+                float slx = cx + lblOff;
+                float slw = colW - lblOff - valOff;
+                float slh = 14;
+                float sly = cy + paramRH/2 - slh/2;
+
+                dl->AddRectFilled(ImVec2(slx,sly),ImVec2(slx+slw,sly+slh),im(14,12,24),7);
+                dl->AddRect      (ImVec2(slx,sly),ImVec2(slx+slw,sly+slh),im(30,28,45),7);
+                float fillFrac = (float)pval/127.f;
+                float fillW = fillFrac*(slw-4);
+                if (fillW>0) GradH(dl,ImVec2(slx+2,sly+2),ImVec2(slx+2+fillW,sly+slh-2),dimC(ac,0.35f),dimC(ac,0.85f));
+                float knobX = slx+2+fillW;
+                dl->AddCircleFilled(ImVec2(knobX,sly+slh/2),5.5f,im(210,205,235));
+                dl->AddCircle      (ImVec2(knobX,sly+slh/2),5.5f,withA(ac,140),12,1.2f);
+
+                char spid[24]; snprintf(spid,sizeof(spid),"##sp%d",actualIdx);
+                ImGui::SetCursorScreenPos(ImVec2(slx-4,sly-16));
+                ImGui::InvisibleButton(spid,ImVec2(slw+8,slh+32));
+                if (!app.showMidi && ImGui::IsItemActive()) {
+                    float rel = (io.MousePos.x - slx - 2) / (slw - 4);
+                    int nv = std::clamp((int)(rel*127),0,127);
+                    if (nv != pval) {
+                        pval = nv;
+                        if (isCTModPage) {
+                            // Mod matrix: send NRPN
+                            int slot = app.synthPage - 9;
+                            app.midi.sendNRPN(app.midiCh, CT_MOD_NRPN[slot][pi][0], CT_MOD_NRPN[slot][pi][1], pval);
+                        } else {
+                            int sendCC_num = isCTSy2 ? CT_SYNTH_CC[app.synthPage][pi]
+                                           : isMF2   ? MF_CC[app.synthPage][pi]
+                                                     : SYNTH_CC[actualIdx];
+                            int sendCh = app.midiCh;
+                            // FX page (page 6): slots 2-5 route to ch16 for global FX sends/master filter
+                            if (isCTSy2 && app.synthPage == 6 && pi >= 2) {
+                                sendCh = 15; // ch16 (0-indexed)
+                                if (pi == 2) sendCC_num = (app.ctTrack == 1) ? 89 : 88;
+                                if (pi == 3) sendCC_num = (app.ctTrack == 1) ? 112 : 111;
+                            }
+                            app.midi.sendCC(sendCh, sendCC_num, pval);
+                        }
+                    }
+                }
+                if (ImGui::IsItemHovered()) {
+                    ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
+                    dl->AddRect(ImVec2(slx-1,sly-1),ImVec2(slx+slw+1,sly+slh+1),withA(ac,80),8);
+                }
             }
         }
     }
@@ -2134,7 +2673,8 @@ static void renderFrame(App& app) {
 
         float popW = 440, pRowH = 64;
         float titleH = 46, cbH = 50;
-        float popH = titleH + 4*pRowH + 14 + cbH;
+        bool isCTDrumPopup = (app.ctTrack >= 2);
+        float popH = titleH + (isCTDrumPopup ? 5 : 4)*pRowH + 14 + cbH;
         float popX = W/2.f - popW/2.f;
         float popY = H/2.f - popH/2.f;
         if (popX < 8) popX = 8;
@@ -2223,7 +2763,9 @@ static void renderFrame(App& app) {
 
                 if (lhov&&ImGui::IsMouseClicked(0)) {
                     switch(i) {
-                        case 0: ptr.note=std::clamp(ptr.note-1,0,127); break;
+                        case 0: ptr.note=std::clamp(ptr.note-1,0,127);
+                                app.midi.noteOn(app.midiCh,ptr.note,ptr.vel);
+                                app.pendingOffs.push_back({app.midiCh,ptr.note,now+0.25}); break;
                         case 1: ptr.vel=std::clamp(ptr.vel-1,1,127); break;
                         case 2: ptr.patLen=std::clamp(ptr.patLen-1,1,app.numPages*NUM_STEPS); break;
                         case 3: { static int lens[]={1,2,4,8,16}; int idx=0; while(idx<4&&lens[idx]<ptr.noteLen)++idx; idx=std::max(0,idx-1); ptr.noteLen=lens[idx]; } break;
@@ -2231,7 +2773,9 @@ static void renderFrame(App& app) {
                 }
                 if (rhov&&ImGui::IsMouseClicked(0)) {
                     switch(i) {
-                        case 0: ptr.note=std::clamp(ptr.note+1,0,127); break;
+                        case 0: ptr.note=std::clamp(ptr.note+1,0,127);
+                                app.midi.noteOn(app.midiCh,ptr.note,ptr.vel);
+                                app.pendingOffs.push_back({app.midiCh,ptr.note,now+0.25}); break;
                         case 1: ptr.vel=std::clamp(ptr.vel+1,1,127); break;
                         case 2: ptr.patLen=std::clamp(ptr.patLen+1,1,app.numPages*NUM_STEPS); break;
                         case 3: { static int lens[]={1,2,4,8,16}; int idx=0; while(idx<4&&lens[idx]<ptr.noteLen)++idx; idx=std::min(4,idx+1); ptr.noteLen=lens[idx]; } break;
@@ -2239,8 +2783,47 @@ static void renderFrame(App& app) {
                 }
             }
 
+            // PATCH row — CT drum only
+            if (isCTDrumPopup) {
+                int drumIdx2 = app.ctTrack - 2;
+                int pi5 = 4;
+                dl->AddRectFilled(ImVec2(popX+4,pp3+pi5*pRowH),
+                                  ImVec2(popX+popW-4,pp3+pi5*pRowH+pRowH-1),im(18,17,28,140),4);
+                char patchLbl[16]; snprintf(patchLbl,sizeof(patchLbl),"CC%d VAL",CT_DRUM_CC[drumIdx2][0]);
+                if (fSm) ImGui::PushFont(fSm);
+                ImVec2 plbl=ImGui::CalcTextSize(patchLbl);
+                dl->AddText(ImVec2(popX+14,pp3+pi5*pRowH+pRowH/2-plbl.y/2),im(90,85,120),patchLbl);
+                if (fSm) ImGui::PopFont();
+                char pchstr[8]; snprintf(pchstr,sizeof(pchstr),"%d",ptr.synthP[0]);
+                if (fBd) ImGui::PushFont(fBd);
+                ImVec2 pvsp=ImGui::CalcTextSize(pchstr);
+                dl->AddText(ImVec2(popX+popW/2-pvsp.x/2,pp3+pi5*pRowH+pRowH/2-pvsp.y/2),im(220,215,245),pchstr);
+                if (fBd) ImGui::PopFont();
+                float lbxP=popX+popW-136, rbxP=popX+popW-68;
+                float bbyP=pp3+pi5*pRowH+(pRowH-btnH2)/2;
+                bool lhovP=ImGui::IsMouseHoveringRect(ImVec2(lbxP,bbyP),ImVec2(lbxP+btnW2,bbyP+btnH2),false);
+                bool rhovP=ImGui::IsMouseHoveringRect(ImVec2(rbxP,bbyP),ImVec2(rbxP+btnW2,bbyP+btnH2),false);
+                dl->AddRectFilled(ImVec2(lbxP,bbyP),ImVec2(lbxP+btnW2,bbyP+btnH2),lhovP?im(55,50,75):im(30,28,45),10);
+                dl->AddRectFilled(ImVec2(rbxP,bbyP),ImVec2(rbxP+btnW2,bbyP+btnH2),rhovP?im(55,50,75):im(30,28,45),10);
+                if (lhovP) dl->AddRect(ImVec2(lbxP,bbyP),ImVec2(lbxP+btnW2,bbyP+btnH2),withA(ptc,120),10);
+                if (rhovP) dl->AddRect(ImVec2(rbxP,bbyP),ImVec2(rbxP+btnW2,bbyP+btnH2),withA(ptc,120),10);
+                if (fBd) ImGui::PushFont(fBd);
+                ImVec2 lcP=ImGui::CalcTextSize("<"),rcP=ImGui::CalcTextSize(">");
+                dl->AddText(ImVec2(lbxP+btnW2/2-lcP.x/2,bbyP+btnH2/2-lcP.y/2),lhovP?im(230,225,255):im(140,135,170),"<");
+                dl->AddText(ImVec2(rbxP+btnW2/2-rcP.x/2,bbyP+btnH2/2-rcP.y/2),rhovP?im(230,225,255):im(140,135,170),">");
+                if (fBd) ImGui::PopFont();
+                if (lhovP&&ImGui::IsMouseClicked(0)) {
+                    ptr.synthP[0]=std::clamp(ptr.synthP[0]-1,0,63);
+                    app.midi.sendCC(9,CT_DRUM_CC[drumIdx2][0],ptr.synthP[0]);
+                }
+                if (rhovP&&ImGui::IsMouseClicked(0)) {
+                    ptr.synthP[0]=std::clamp(ptr.synthP[0]+1,0,63);
+                    app.midi.sendCC(9,CT_DRUM_CC[drumIdx2][0],ptr.synthP[0]);
+                }
+            }
+
             // Close button
-            float cbY2=pp3+4*pRowH+12;
+            float cbY2=pp3+(isCTDrumPopup?5:4)*pRowH+12;
             float cbX2=popX+popW/2-80, cbW2=160;
             bool cchov=ImGui::IsMouseHoveringRect(ImVec2(cbX2,cbY2),ImVec2(cbX2+cbW2,cbY2+cbH),false);
             dl->AddRectFilled(ImVec2(cbX2,cbY2),ImVec2(cbX2+cbW2,cbY2+cbH),
@@ -2368,6 +2951,16 @@ static void renderFrame(App& app) {
                     if (rows[r].idx==-1)      app.midi.closeOut();
                     else if (rows[r].idx==-2) app.midi.openVirtual();
                     else                      app.midi.openOut(rows[r].idx);
+                    // Reset CT track selector whenever output port changes
+                    app.ctTrack = -1;
+                    app.ctDrumPage = 0;
+                    app.synthPage = 0;
+                    // Restore default notes/channels
+                    app.midiCh = 9;
+                    for (int t = 0; t < NUM_TRACKS; ++t) {
+                        app.tracks[t].ch   = 9;
+                        app.tracks[t].note = TDEFS[t].note;
+                    }
                 }
                 if (ImGui::IsItemHovered() && !sel2)
                     dl->AddRect(ImVec2(mox,ry2+1), ImVec2(mox+mcolW,ry2+mrowH-1), im(55,85,165,90), 6);
@@ -2476,12 +3069,13 @@ static void renderFrame(App& app) {
             { char swb[8]; snprintf(swb, sizeof(swb), "%d%%", app.swing);
               dl->AddText(ImVec2(slx+slw+12, sly+slh/2-7), im(175,170,205), swb); }
             if (fSm) ImGui::PopFont();
-            ImGui::SetCursorScreenPos(ImVec2(slx, sly-4));
-            ImGui::InvisibleButton("##swing", ImVec2(slw, slh+8));
+            ImGui::SetCursorScreenPos(ImVec2(slx, sly-12));
+            ImGui::InvisibleButton("##swing", ImVec2(slw, slh+24));
             if (ImGui::IsItemActive() && ImGui::IsMouseDragging(0)) {
                 float rel = (io.MousePos.x - slx - 4) / (slw - 8);
                 app.swing = std::clamp((int)(rel * 50), 0, 50);
             }
+            if (ImGui::IsItemHovered()) ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
 
             // REFRESH PORTS button
             const float rfH = 44, rfW = 170;
@@ -2629,6 +3223,9 @@ int main(int, char**) {
         app.tracks[t].dtype = TDEFS[t].dtype;
         app.tracks[t].ch = 0;
         app.tracks[t].vel = 100;
+        // Each track defaults to its own drum patch index (0-15)
+        // so all 16 pads have distinct patches ready to go in CT drum mode
+        app.tracks[t].synthP[0] = t;
     }
     // ── Per-track default synth parameters (distinct character per instrument) ──
     // Format: p[0-5]=SYNTH  p[6-11]=EXT  p[12-17]=FX  p[18-23]=SEND

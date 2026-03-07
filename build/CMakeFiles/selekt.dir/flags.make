@@ -4,9 +4,9 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -D__MACOSX_CORE__
 
-CXX_INCLUDES = -I/Users/pat/space/midi_sequencer/build/_deps/imgui-src -I/Users/pat/space/midi_sequencer/build/_deps/imgui-src/backends -I/Users/pat/space/midi_sequencer/build/_deps/glfw-src/include -I/Users/pat/space/midi_sequencer/build/_deps/rtmidi-src
+CXX_INCLUDES = -I/Users/pat/Desktop/Selekt/build/_deps/imgui-src -I/Users/pat/Desktop/Selekt/build/_deps/imgui-src/backends -I/Users/pat/Desktop/Selekt/build/_deps/glfw-src/include -I/Users/pat/Desktop/Selekt/build/_deps/rtmidi-src
 
-CXX_FLAGSarm64 = -O3 -DNDEBUG -std=gnu++17 -arch arm64
+CXX_FLAGSarm64 = -std=gnu++17 -arch arm64
 
-CXX_FLAGS = -O3 -DNDEBUG -std=gnu++17 -arch arm64
+CXX_FLAGS = -std=gnu++17 -arch arm64
 

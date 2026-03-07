@@ -1,10 +1,10 @@
 {
 	"InstallScripts" : 
 	[
-		"/Users/pat/space/midi_sequencer/build/cmake_install.cmake",
-		"/Users/pat/space/midi_sequencer/build/_deps/glfw-build/cmake_install.cmake",
-		"/Users/pat/space/midi_sequencer/build/_deps/glfw-build/src/cmake_install.cmake",
-		"/Users/pat/space/midi_sequencer/build/_deps/rtmidi-build/cmake_install.cmake"
+		"/Users/pat/Desktop/Selekt/build/cmake_install.cmake",
+		"/Users/pat/Desktop/Selekt/build/_deps/glfw-build/cmake_install.cmake",
+		"/Users/pat/Desktop/Selekt/build/_deps/glfw-build/src/cmake_install.cmake",
+		"/Users/pat/Desktop/Selekt/build/_deps/rtmidi-build/cmake_install.cmake"
 	],
 	"Parallel" : false
 }

@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/pat/space/midi_sequencer
+CMAKE_SOURCE_DIR = /Users/pat/Desktop/Selekt
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/pat/space/midi_sequencer/build
+CMAKE_BINARY_DIR = /Users/pat/Desktop/Selekt/build
 
 # Utility rule file for uninstall.
 
@@ -67,7 +67,7 @@ include _deps/rtmidi-build/CMakeFiles/uninstall.dir/compiler_depend.make
 include _deps/rtmidi-build/CMakeFiles/uninstall.dir/progress.make
 
 _deps/rtmidi-build/CMakeFiles/uninstall:
-	cd /Users/pat/space/midi_sequencer/build/_deps/rtmidi-build && /opt/homebrew/bin/cmake -P /Users/pat/space/midi_sequencer/build/RtMidiConfigUninstall.cmake
+	cd /Users/pat/Desktop/Selekt/build/_deps/rtmidi-build && /opt/homebrew/bin/cmake -P /Users/pat/Desktop/Selekt/build/RtMidiConfigUninstall.cmake
 
 _deps/rtmidi-build/CMakeFiles/uninstall.dir/codegen:
 .PHONY : _deps/rtmidi-build/CMakeFiles/uninstall.dir/codegen
@@ -81,10 +81,10 @@ _deps/rtmidi-build/CMakeFiles/uninstall.dir/build: uninstall
 .PHONY : _deps/rtmidi-build/CMakeFiles/uninstall.dir/build
 
 _deps/rtmidi-build/CMakeFiles/uninstall.dir/clean:
-	cd /Users/pat/space/midi_sequencer/build/_deps/rtmidi-build && $(CMAKE_COMMAND) -P CMakeFiles/uninstall.dir/cmake_clean.cmake
+	cd /Users/pat/Desktop/Selekt/build/_deps/rtmidi-build && $(CMAKE_COMMAND) -P CMakeFiles/uninstall.dir/cmake_clean.cmake
 .PHONY : _deps/rtmidi-build/CMakeFiles/uninstall.dir/clean
 
 _deps/rtmidi-build/CMakeFiles/uninstall.dir/depend:
-	cd /Users/pat/space/midi_sequencer/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/pat/space/midi_sequencer /Users/pat/space/midi_sequencer/build/_deps/rtmidi-src /Users/pat/space/midi_sequencer/build /Users/pat/space/midi_sequencer/build/_deps/rtmidi-build /Users/pat/space/midi_sequencer/build/_deps/rtmidi-build/CMakeFiles/uninstall.dir/DependInfo.cmake "--color=$(COLOR)" uninstall
+	cd /Users/pat/Desktop/Selekt/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/pat/Desktop/Selekt /Users/pat/Desktop/Selekt/build/_deps/rtmidi-src /Users/pat/Desktop/Selekt/build /Users/pat/Desktop/Selekt/build/_deps/rtmidi-build /Users/pat/Desktop/Selekt/build/_deps/rtmidi-build/CMakeFiles/uninstall.dir/DependInfo.cmake "--color=$(COLOR)" uninstall
 .PHONY : _deps/rtmidi-build/CMakeFiles/uninstall.dir/depend
 

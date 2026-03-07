@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/pat/space/midi_sequencer
+CMAKE_SOURCE_DIR = /Users/pat/Desktop/Selekt
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/pat/space/midi_sequencer/build
+CMAKE_BINARY_DIR = /Users/pat/Desktop/Selekt/build
 
 # Include any dependencies generated for this target.
 include _deps/rtmidi-build/CMakeFiles/rtmidi.dir/depend.make
@@ -75,30 +75,30 @@ _deps/rtmidi-build/CMakeFiles/rtmidi.dir/codegen:
 _deps/rtmidi-build/CMakeFiles/rtmidi.dir/RtMidi.cpp.o: _deps/rtmidi-build/CMakeFiles/rtmidi.dir/flags.make
 _deps/rtmidi-build/CMakeFiles/rtmidi.dir/RtMidi.cpp.o: _deps/rtmidi-src/RtMidi.cpp
 _deps/rtmidi-build/CMakeFiles/rtmidi.dir/RtMidi.cpp.o: _deps/rtmidi-build/CMakeFiles/rtmidi.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/pat/space/midi_sequencer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object _deps/rtmidi-build/CMakeFiles/rtmidi.dir/RtMidi.cpp.o"
-	cd /Users/pat/space/midi_sequencer/build/_deps/rtmidi-build && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/rtmidi-build/CMakeFiles/rtmidi.dir/RtMidi.cpp.o -MF CMakeFiles/rtmidi.dir/RtMidi.cpp.o.d -o CMakeFiles/rtmidi.dir/RtMidi.cpp.o -c /Users/pat/space/midi_sequencer/build/_deps/rtmidi-src/RtMidi.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/pat/Desktop/Selekt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object _deps/rtmidi-build/CMakeFiles/rtmidi.dir/RtMidi.cpp.o"
+	cd /Users/pat/Desktop/Selekt/build/_deps/rtmidi-build && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/rtmidi-build/CMakeFiles/rtmidi.dir/RtMidi.cpp.o -MF CMakeFiles/rtmidi.dir/RtMidi.cpp.o.d -o CMakeFiles/rtmidi.dir/RtMidi.cpp.o -c /Users/pat/Desktop/Selekt/build/_deps/rtmidi-src/RtMidi.cpp
 
 _deps/rtmidi-build/CMakeFiles/rtmidi.dir/RtMidi.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/rtmidi.dir/RtMidi.cpp.i"
-	cd /Users/pat/space/midi_sequencer/build/_deps/rtmidi-build && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/pat/space/midi_sequencer/build/_deps/rtmidi-src/RtMidi.cpp > CMakeFiles/rtmidi.dir/RtMidi.cpp.i
+	cd /Users/pat/Desktop/Selekt/build/_deps/rtmidi-build && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/pat/Desktop/Selekt/build/_deps/rtmidi-src/RtMidi.cpp > CMakeFiles/rtmidi.dir/RtMidi.cpp.i
 
 _deps/rtmidi-build/CMakeFiles/rtmidi.dir/RtMidi.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/rtmidi.dir/RtMidi.cpp.s"
-	cd /Users/pat/space/midi_sequencer/build/_deps/rtmidi-build && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/pat/space/midi_sequencer/build/_deps/rtmidi-src/RtMidi.cpp -o CMakeFiles/rtmidi.dir/RtMidi.cpp.s
+	cd /Users/pat/Desktop/Selekt/build/_deps/rtmidi-build && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/pat/Desktop/Selekt/build/_deps/rtmidi-src/RtMidi.cpp -o CMakeFiles/rtmidi.dir/RtMidi.cpp.s
 
 _deps/rtmidi-build/CMakeFiles/rtmidi.dir/rtmidi_c.cpp.o: _deps/rtmidi-build/CMakeFiles/rtmidi.dir/flags.make
 _deps/rtmidi-build/CMakeFiles/rtmidi.dir/rtmidi_c.cpp.o: _deps/rtmidi-src/rtmidi_c.cpp
 _deps/rtmidi-build/CMakeFiles/rtmidi.dir/rtmidi_c.cpp.o: _deps/rtmidi-build/CMakeFiles/rtmidi.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/pat/space/midi_sequencer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object _deps/rtmidi-build/CMakeFiles/rtmidi.dir/rtmidi_c.cpp.o"
-	cd /Users/pat/space/midi_sequencer/build/_deps/rtmidi-build && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/rtmidi-build/CMakeFiles/rtmidi.dir/rtmidi_c.cpp.o -MF CMakeFiles/rtmidi.dir/rtmidi_c.cpp.o.d -o CMakeFiles/rtmidi.dir/rtmidi_c.cpp.o -c /Users/pat/space/midi_sequencer/build/_deps/rtmidi-src/rtmidi_c.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/pat/Desktop/Selekt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object _deps/rtmidi-build/CMakeFiles/rtmidi.dir/rtmidi_c.cpp.o"
+	cd /Users/pat/Desktop/Selekt/build/_deps/rtmidi-build && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT _deps/rtmidi-build/CMakeFiles/rtmidi.dir/rtmidi_c.cpp.o -MF CMakeFiles/rtmidi.dir/rtmidi_c.cpp.o.d -o CMakeFiles/rtmidi.dir/rtmidi_c.cpp.o -c /Users/pat/Desktop/Selekt/build/_deps/rtmidi-src/rtmidi_c.cpp
 
 _deps/rtmidi-build/CMakeFiles/rtmidi.dir/rtmidi_c.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/rtmidi.dir/rtmidi_c.cpp.i"
-	cd /Users/pat/space/midi_sequencer/build/_deps/rtmidi-build && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/pat/space/midi_sequencer/build/_deps/rtmidi-src/rtmidi_c.cpp > CMakeFiles/rtmidi.dir/rtmidi_c.cpp.i
+	cd /Users/pat/Desktop/Selekt/build/_deps/rtmidi-build && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/pat/Desktop/Selekt/build/_deps/rtmidi-src/rtmidi_c.cpp > CMakeFiles/rtmidi.dir/rtmidi_c.cpp.i
 
 _deps/rtmidi-build/CMakeFiles/rtmidi.dir/rtmidi_c.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/rtmidi.dir/rtmidi_c.cpp.s"
-	cd /Users/pat/space/midi_sequencer/build/_deps/rtmidi-build && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/pat/space/midi_sequencer/build/_deps/rtmidi-src/rtmidi_c.cpp -o CMakeFiles/rtmidi.dir/rtmidi_c.cpp.s
+	cd /Users/pat/Desktop/Selekt/build/_deps/rtmidi-build && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/pat/Desktop/Selekt/build/_deps/rtmidi-src/rtmidi_c.cpp -o CMakeFiles/rtmidi.dir/rtmidi_c.cpp.s
 
 # Object files for target rtmidi
 rtmidi_OBJECTS = \
@@ -112,19 +112,19 @@ _deps/rtmidi-build/librtmidi.a: _deps/rtmidi-build/CMakeFiles/rtmidi.dir/RtMidi.
 _deps/rtmidi-build/librtmidi.a: _deps/rtmidi-build/CMakeFiles/rtmidi.dir/rtmidi_c.cpp.o
 _deps/rtmidi-build/librtmidi.a: _deps/rtmidi-build/CMakeFiles/rtmidi.dir/build.make
 _deps/rtmidi-build/librtmidi.a: _deps/rtmidi-build/CMakeFiles/rtmidi.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/pat/space/midi_sequencer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX static library librtmidi.a"
-	cd /Users/pat/space/midi_sequencer/build/_deps/rtmidi-build && $(CMAKE_COMMAND) -P CMakeFiles/rtmidi.dir/cmake_clean_target.cmake
-	cd /Users/pat/space/midi_sequencer/build/_deps/rtmidi-build && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/rtmidi.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/pat/Desktop/Selekt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX static library librtmidi.a"
+	cd /Users/pat/Desktop/Selekt/build/_deps/rtmidi-build && $(CMAKE_COMMAND) -P CMakeFiles/rtmidi.dir/cmake_clean_target.cmake
+	cd /Users/pat/Desktop/Selekt/build/_deps/rtmidi-build && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/rtmidi.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 _deps/rtmidi-build/CMakeFiles/rtmidi.dir/build: _deps/rtmidi-build/librtmidi.a
 .PHONY : _deps/rtmidi-build/CMakeFiles/rtmidi.dir/build
 
 _deps/rtmidi-build/CMakeFiles/rtmidi.dir/clean:
-	cd /Users/pat/space/midi_sequencer/build/_deps/rtmidi-build && $(CMAKE_COMMAND) -P CMakeFiles/rtmidi.dir/cmake_clean.cmake
+	cd /Users/pat/Desktop/Selekt/build/_deps/rtmidi-build && $(CMAKE_COMMAND) -P CMakeFiles/rtmidi.dir/cmake_clean.cmake
 .PHONY : _deps/rtmidi-build/CMakeFiles/rtmidi.dir/clean
 
 _deps/rtmidi-build/CMakeFiles/rtmidi.dir/depend:
-	cd /Users/pat/space/midi_sequencer/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/pat/space/midi_sequencer /Users/pat/space/midi_sequencer/build/_deps/rtmidi-src /Users/pat/space/midi_sequencer/build /Users/pat/space/midi_sequencer/build/_deps/rtmidi-build /Users/pat/space/midi_sequencer/build/_deps/rtmidi-build/CMakeFiles/rtmidi.dir/DependInfo.cmake "--color=$(COLOR)" rtmidi
+	cd /Users/pat/Desktop/Selekt/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/pat/Desktop/Selekt /Users/pat/Desktop/Selekt/build/_deps/rtmidi-src /Users/pat/Desktop/Selekt/build /Users/pat/Desktop/Selekt/build/_deps/rtmidi-build /Users/pat/Desktop/Selekt/build/_deps/rtmidi-build/CMakeFiles/rtmidi.dir/DependInfo.cmake "--color=$(COLOR)" rtmidi
 .PHONY : _deps/rtmidi-build/CMakeFiles/rtmidi.dir/depend
 

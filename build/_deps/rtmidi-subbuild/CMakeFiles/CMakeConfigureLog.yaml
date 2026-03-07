@@ -34,7 +34,6 @@ events:
       - "/Applications/Little Snitch.app/Contents/Components/"
       - "/opt/homebrew/bin/"
       - "/Users/pat/.lmstudio/bin/"
-      - "/Users/pat/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/"
     searched_directories:
       - "/Users/pat/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/uname"
       - "/Users/pat/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/uname"
@@ -59,7 +58,6 @@ events:
         - "/Users/pat/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
         - "/Users/pat/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
         - "/Users/pat/.lmstudio/bin"
-        - "/Users/pat/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
         - "/Users/pat/.lmstudio/bin"
   -
     kind: "message-v1"
@@ -102,7 +100,6 @@ events:
       - "/Applications/Little Snitch.app/Contents/Components/"
       - "/opt/homebrew/bin/"
       - "/Users/pat/.lmstudio/bin/"
-      - "/Users/pat/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts/"
     searched_directories:
       - "/Users/pat/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/install_name_tool"
       - "/Users/pat/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/install_name_tool"
@@ -127,7 +124,6 @@ events:
         - "/Users/pat/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
         - "/Users/pat/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
         - "/Users/pat/.lmstudio/bin"
-        - "/Users/pat/.vscode/extensions/ms-python.debugpy-2025.18.0-darwin-arm64/bundled/scripts/noConfigScripts"
         - "/Users/pat/.lmstudio/bin"
       CMAKE_INSTALL_PREFIX: "/usr/local"
 ...

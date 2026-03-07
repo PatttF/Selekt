@@ -1,0 +1,15 @@
+set(CMAKE_SYSTEM_NAME Windows)
+set(CMAKE_SYSTEM_PROCESSOR x86_64)
+
+set(MINGW_PREFIX x86_64-w64-mingw32)
+
+find_program(CMAKE_C_COMPILER   ${MINGW_PREFIX}-gcc)
+find_program(CMAKE_CXX_COMPILER ${MINGW_PREFIX}-g++)
+find_program(CMAKE_RC_COMPILER  ${MINGW_PREFIX}-windres)
+
+set(CMAKE_FIND_ROOT_PATH /opt/homebrew/Cellar/mingw-w64)
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+
+set(CMAKE_EXE_LINKER_FLAGS "-static -static-libgcc -static-libstdc++")

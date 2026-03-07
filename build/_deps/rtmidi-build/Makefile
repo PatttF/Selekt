@@ -57,10 +57,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/pat/space/midi_sequencer
+CMAKE_SOURCE_DIR = /Users/pat/Desktop/Selekt
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/pat/space/midi_sequencer/build
+CMAKE_BINARY_DIR = /Users/pat/Desktop/Selekt/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -132,14 +132,14 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	cd /Users/pat/space/midi_sequencer/build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/pat/space/midi_sequencer/build/CMakeFiles /Users/pat/space/midi_sequencer/build/_deps/rtmidi-build//CMakeFiles/progress.marks
-	cd /Users/pat/space/midi_sequencer/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/rtmidi-build/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/pat/space/midi_sequencer/build/CMakeFiles 0
+	cd /Users/pat/Desktop/Selekt/build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/pat/Desktop/Selekt/build/CMakeFiles /Users/pat/Desktop/Selekt/build/_deps/rtmidi-build//CMakeFiles/progress.marks
+	cd /Users/pat/Desktop/Selekt/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/rtmidi-build/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/pat/Desktop/Selekt/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /Users/pat/space/midi_sequencer/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/rtmidi-build/clean
+	cd /Users/pat/Desktop/Selekt/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/rtmidi-build/clean
 .PHONY : clean
 
 # The main clean target
@@ -148,22 +148,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /Users/pat/space/midi_sequencer/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/rtmidi-build/preinstall
+	cd /Users/pat/Desktop/Selekt/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/rtmidi-build/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /Users/pat/space/midi_sequencer/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/rtmidi-build/preinstall
+	cd /Users/pat/Desktop/Selekt/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/rtmidi-build/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /Users/pat/space/midi_sequencer/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /Users/pat/Desktop/Selekt/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 _deps/rtmidi-build/CMakeFiles/rtmidi.dir/rule:
-	cd /Users/pat/space/midi_sequencer/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/rtmidi-build/CMakeFiles/rtmidi.dir/rule
+	cd /Users/pat/Desktop/Selekt/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/rtmidi-build/CMakeFiles/rtmidi.dir/rule
 .PHONY : _deps/rtmidi-build/CMakeFiles/rtmidi.dir/rule
 
 # Convenience name for target.
@@ -172,12 +172,12 @@ rtmidi: _deps/rtmidi-build/CMakeFiles/rtmidi.dir/rule
 
 # fast build rule for target.
 rtmidi/fast:
-	cd /Users/pat/space/midi_sequencer/build && $(MAKE) $(MAKESILENT) -f _deps/rtmidi-build/CMakeFiles/rtmidi.dir/build.make _deps/rtmidi-build/CMakeFiles/rtmidi.dir/build
+	cd /Users/pat/Desktop/Selekt/build && $(MAKE) $(MAKESILENT) -f _deps/rtmidi-build/CMakeFiles/rtmidi.dir/build.make _deps/rtmidi-build/CMakeFiles/rtmidi.dir/build
 .PHONY : rtmidi/fast
 
 # Convenience name for target.
 _deps/rtmidi-build/CMakeFiles/uninstall.dir/rule:
-	cd /Users/pat/space/midi_sequencer/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/rtmidi-build/CMakeFiles/uninstall.dir/rule
+	cd /Users/pat/Desktop/Selekt/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/rtmidi-build/CMakeFiles/uninstall.dir/rule
 .PHONY : _deps/rtmidi-build/CMakeFiles/uninstall.dir/rule
 
 # Convenience name for target.
@@ -186,7 +186,7 @@ uninstall: _deps/rtmidi-build/CMakeFiles/uninstall.dir/rule
 
 # fast build rule for target.
 uninstall/fast:
-	cd /Users/pat/space/midi_sequencer/build && $(MAKE) $(MAKESILENT) -f _deps/rtmidi-build/CMakeFiles/uninstall.dir/build.make _deps/rtmidi-build/CMakeFiles/uninstall.dir/build
+	cd /Users/pat/Desktop/Selekt/build && $(MAKE) $(MAKESILENT) -f _deps/rtmidi-build/CMakeFiles/uninstall.dir/build.make _deps/rtmidi-build/CMakeFiles/uninstall.dir/build
 .PHONY : uninstall/fast
 
 RtMidi.o: RtMidi.cpp.o
@@ -194,7 +194,7 @@ RtMidi.o: RtMidi.cpp.o
 
 # target to build an object file
 RtMidi.cpp.o:
-	cd /Users/pat/space/midi_sequencer/build && $(MAKE) $(MAKESILENT) -f _deps/rtmidi-build/CMakeFiles/rtmidi.dir/build.make _deps/rtmidi-build/CMakeFiles/rtmidi.dir/RtMidi.cpp.o
+	cd /Users/pat/Desktop/Selekt/build && $(MAKE) $(MAKESILENT) -f _deps/rtmidi-build/CMakeFiles/rtmidi.dir/build.make _deps/rtmidi-build/CMakeFiles/rtmidi.dir/RtMidi.cpp.o
 .PHONY : RtMidi.cpp.o
 
 RtMidi.i: RtMidi.cpp.i
@@ -202,7 +202,7 @@ RtMidi.i: RtMidi.cpp.i
 
 # target to preprocess a source file
 RtMidi.cpp.i:
-	cd /Users/pat/space/midi_sequencer/build && $(MAKE) $(MAKESILENT) -f _deps/rtmidi-build/CMakeFiles/rtmidi.dir/build.make _deps/rtmidi-build/CMakeFiles/rtmidi.dir/RtMidi.cpp.i
+	cd /Users/pat/Desktop/Selekt/build && $(MAKE) $(MAKESILENT) -f _deps/rtmidi-build/CMakeFiles/rtmidi.dir/build.make _deps/rtmidi-build/CMakeFiles/rtmidi.dir/RtMidi.cpp.i
 .PHONY : RtMidi.cpp.i
 
 RtMidi.s: RtMidi.cpp.s
@@ -210,7 +210,7 @@ RtMidi.s: RtMidi.cpp.s
 
 # target to generate assembly for a file
 RtMidi.cpp.s:
-	cd /Users/pat/space/midi_sequencer/build && $(MAKE) $(MAKESILENT) -f _deps/rtmidi-build/CMakeFiles/rtmidi.dir/build.make _deps/rtmidi-build/CMakeFiles/rtmidi.dir/RtMidi.cpp.s
+	cd /Users/pat/Desktop/Selekt/build && $(MAKE) $(MAKESILENT) -f _deps/rtmidi-build/CMakeFiles/rtmidi.dir/build.make _deps/rtmidi-build/CMakeFiles/rtmidi.dir/RtMidi.cpp.s
 .PHONY : RtMidi.cpp.s
 
 rtmidi_c.o: rtmidi_c.cpp.o
@@ -218,7 +218,7 @@ rtmidi_c.o: rtmidi_c.cpp.o
 
 # target to build an object file
 rtmidi_c.cpp.o:
-	cd /Users/pat/space/midi_sequencer/build && $(MAKE) $(MAKESILENT) -f _deps/rtmidi-build/CMakeFiles/rtmidi.dir/build.make _deps/rtmidi-build/CMakeFiles/rtmidi.dir/rtmidi_c.cpp.o
+	cd /Users/pat/Desktop/Selekt/build && $(MAKE) $(MAKESILENT) -f _deps/rtmidi-build/CMakeFiles/rtmidi.dir/build.make _deps/rtmidi-build/CMakeFiles/rtmidi.dir/rtmidi_c.cpp.o
 .PHONY : rtmidi_c.cpp.o
 
 rtmidi_c.i: rtmidi_c.cpp.i
@@ -226,7 +226,7 @@ rtmidi_c.i: rtmidi_c.cpp.i
 
 # target to preprocess a source file
 rtmidi_c.cpp.i:
-	cd /Users/pat/space/midi_sequencer/build && $(MAKE) $(MAKESILENT) -f _deps/rtmidi-build/CMakeFiles/rtmidi.dir/build.make _deps/rtmidi-build/CMakeFiles/rtmidi.dir/rtmidi_c.cpp.i
+	cd /Users/pat/Desktop/Selekt/build && $(MAKE) $(MAKESILENT) -f _deps/rtmidi-build/CMakeFiles/rtmidi.dir/build.make _deps/rtmidi-build/CMakeFiles/rtmidi.dir/rtmidi_c.cpp.i
 .PHONY : rtmidi_c.cpp.i
 
 rtmidi_c.s: rtmidi_c.cpp.s
@@ -234,7 +234,7 @@ rtmidi_c.s: rtmidi_c.cpp.s
 
 # target to generate assembly for a file
 rtmidi_c.cpp.s:
-	cd /Users/pat/space/midi_sequencer/build && $(MAKE) $(MAKESILENT) -f _deps/rtmidi-build/CMakeFiles/rtmidi.dir/build.make _deps/rtmidi-build/CMakeFiles/rtmidi.dir/rtmidi_c.cpp.s
+	cd /Users/pat/Desktop/Selekt/build && $(MAKE) $(MAKESILENT) -f _deps/rtmidi-build/CMakeFiles/rtmidi.dir/build.make _deps/rtmidi-build/CMakeFiles/rtmidi.dir/rtmidi_c.cpp.s
 .PHONY : rtmidi_c.cpp.s
 
 # Help Target
@@ -268,6 +268,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /Users/pat/space/midi_sequencer/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /Users/pat/Desktop/Selekt/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

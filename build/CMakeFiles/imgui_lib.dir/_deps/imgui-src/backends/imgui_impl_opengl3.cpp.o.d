@@ -1,7 +1,7 @@
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_opengl3.cpp.o: \
-  /Users/pat/space/midi_sequencer/build/_deps/imgui-src/backends/imgui_impl_opengl3.cpp \
-  /Users/pat/space/midi_sequencer/build/_deps/imgui-src/imgui.h \
-  /Users/pat/space/midi_sequencer/build/_deps/imgui-src/imconfig.h \
+  /Users/pat/Desktop/Selekt/build/_deps/imgui-src/backends/imgui_impl_opengl3.cpp \
+  /Users/pat/Desktop/Selekt/build/_deps/imgui-src/imgui.h \
+  /Users/pat/Desktop/Selekt/build/_deps/imgui-src/imconfig.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/float.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config_site \
@@ -66,8 +66,9 @@ CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_opengl3.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_ssize_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_strings.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/assert.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_assert.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_static_assert.h \
-  /Users/pat/space/midi_sequencer/build/_deps/imgui-src/backends/imgui_impl_opengl3.h \
+  /Users/pat/Desktop/Selekt/build/_deps/imgui-src/backends/imgui_impl_opengl3.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/TargetConditionals.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/stdio.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdio.h \
@@ -87,7 +88,7 @@ CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_opengl3.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types/_uint64_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types/_intmax_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types/_uintmax_t.h \
-  /Users/pat/space/midi_sequencer/build/_deps/imgui-src/backends/imgui_impl_opengl3_loader.h \
+  /Users/pat/Desktop/Selekt/build/_deps/imgui-src/backends/imgui_impl_opengl3_loader.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/stdlib.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdlib.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdlib.h \

@@ -1,7 +1,7 @@
 CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_glfw.cpp.o: \
-  /Users/pat/space/midi_sequencer/build/_deps/imgui-src/backends/imgui_impl_glfw.cpp \
-  /Users/pat/space/midi_sequencer/build/_deps/imgui-src/imgui.h \
-  /Users/pat/space/midi_sequencer/build/_deps/imgui-src/imconfig.h \
+  /Users/pat/Desktop/Selekt/build/_deps/imgui-src/backends/imgui_impl_glfw.cpp \
+  /Users/pat/Desktop/Selekt/build/_deps/imgui-src/imgui.h \
+  /Users/pat/Desktop/Selekt/build/_deps/imgui-src/imconfig.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/float.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config_site \
@@ -66,9 +66,10 @@ CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_glfw.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_ssize_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_strings.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/assert.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_assert.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_static_assert.h \
-  /Users/pat/space/midi_sequencer/build/_deps/imgui-src/backends/imgui_impl_glfw.h \
-  /Users/pat/space/midi_sequencer/build/_deps/glfw-src/include/GLFW/glfw3.h \
+  /Users/pat/Desktop/Selekt/build/_deps/imgui-src/backends/imgui_impl_glfw.h \
+  /Users/pat/Desktop/Selekt/build/_deps/glfw-src/include/GLFW/glfw3.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/stdint.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdint.h \
@@ -83,7 +84,7 @@ CMakeFiles/imgui_lib.dir/_deps/imgui-src/backends/imgui_impl_glfw.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers/gltypes.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers/OpenGLAvailability.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/os/availability.h \
-  /Users/pat/space/midi_sequencer/build/_deps/glfw-src/include/GLFW/glfw3native.h \
+  /Users/pat/Desktop/Selekt/build/_deps/glfw-src/include/GLFW/glfw3native.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/ApplicationServices.framework/Headers/ApplicationServices.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework/Headers/CoreServices.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CoreFoundation.h \

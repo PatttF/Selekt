@@ -50,15 +50,15 @@ unset(_cmake_expected_targets)
 add_library(RtMidi::rtmidi STATIC IMPORTED)
 
 set_target_properties(RtMidi::rtmidi PROPERTIES
-  INTERFACE_INCLUDE_DIRECTORIES "/Users/pat/space/midi_sequencer/build/_deps/rtmidi-src"
+  INTERFACE_INCLUDE_DIRECTORIES "/Users/pat/Desktop/Selekt/build/_deps/rtmidi-src"
   INTERFACE_LINK_LIBRARIES "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreServices.framework;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreAudio.framework;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreMIDI.framework;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework"
 )
 
-# Import target "RtMidi::rtmidi" for configuration "Release"
-set_property(TARGET RtMidi::rtmidi APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
+# Import target "RtMidi::rtmidi" for configuration ""
+set_property(TARGET RtMidi::rtmidi APPEND PROPERTY IMPORTED_CONFIGURATIONS NOCONFIG)
 set_target_properties(RtMidi::rtmidi PROPERTIES
-  IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE "CXX"
-  IMPORTED_LOCATION_RELEASE "/Users/pat/space/midi_sequencer/build/_deps/rtmidi-build/librtmidi.a"
+  IMPORTED_LINK_INTERFACE_LANGUAGES_NOCONFIG "CXX"
+  IMPORTED_LOCATION_NOCONFIG "/Users/pat/Desktop/Selekt/build/_deps/rtmidi-build/librtmidi.a"
   )
 
 # This file does not depend on other imported targets which have

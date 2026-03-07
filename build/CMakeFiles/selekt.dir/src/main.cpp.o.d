@@ -1,7 +1,7 @@
 CMakeFiles/selekt.dir/src/main.cpp.o: \
-  /Users/pat/space/midi_sequencer/src/main.cpp \
-  /Users/pat/space/midi_sequencer/build/_deps/imgui-src/imgui.h \
-  /Users/pat/space/midi_sequencer/build/_deps/imgui-src/imconfig.h \
+  /Users/pat/Desktop/Selekt/src/main.cpp \
+  /Users/pat/Desktop/Selekt/build/_deps/imgui-src/imgui.h \
+  /Users/pat/Desktop/Selekt/build/_deps/imgui-src/imconfig.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/float.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config_site \
@@ -66,11 +66,12 @@ CMakeFiles/selekt.dir/src/main.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_ssize_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_strings.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/assert.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_assert.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_static_assert.h \
-  /Users/pat/space/midi_sequencer/build/_deps/imgui-src/backends/imgui_impl_glfw.h \
-  /Users/pat/space/midi_sequencer/build/_deps/imgui-src/backends/imgui_impl_opengl3.h \
+  /Users/pat/Desktop/Selekt/build/_deps/imgui-src/backends/imgui_impl_glfw.h \
+  /Users/pat/Desktop/Selekt/build/_deps/imgui-src/backends/imgui_impl_opengl3.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/TargetConditionals.h \
-  /Users/pat/space/midi_sequencer/build/_deps/imgui-src/imgui_internal.h \
+  /Users/pat/Desktop/Selekt/build/_deps/imgui-src/imgui_internal.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/stdio.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdio.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_stdio.h \
@@ -251,13 +252,13 @@ CMakeFiles/selekt.dir/src/main.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/limits.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/_limits.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/syslimits.h \
-  /Users/pat/space/midi_sequencer/build/_deps/glfw-src/include/GLFW/glfw3.h \
+  /Users/pat/Desktop/Selekt/build/_deps/glfw-src/include/GLFW/glfw3.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers/gl.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers/gltypes.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers/OpenGLAvailability.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/os/availability.h \
-  /Users/pat/space/midi_sequencer/build/_deps/rtmidi-src/RtMidi.h \
+  /Users/pat/Desktop/Selekt/build/_deps/rtmidi-src/RtMidi.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/exception \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__exception/exception.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__exception/exception_ptr.h \
@@ -808,8 +809,8 @@ CMakeFiles/selekt.dir/src/main.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__fwd/stack.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/print \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/unistd.h \
-  /Users/pat/space/midi_sequencer/src/drum_synth.h \
-  /Users/pat/space/midi_sequencer/src/miniaudio.h \
+  /Users/pat/Desktop/Selekt/src/drum_synth.h \
+  /Users/pat/Desktop/Selekt/src/miniaudio.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/strings.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/time.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_timeval64.h \
@@ -966,5 +967,5 @@ CMakeFiles/selekt.dir/src/main.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/AUMIDIController.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/CoreAudioClock.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/AudioToolbox.framework/Headers/AudioSession.h \
-  /Users/pat/space/midi_sequencer/src/RobotoMono_Regular.h \
-  /Users/pat/space/midi_sequencer/src/RobotoMono_Bold.h
+  /Users/pat/Desktop/Selekt/src/RobotoMono_Regular.h \
+  /Users/pat/Desktop/Selekt/src/RobotoMono_Bold.h

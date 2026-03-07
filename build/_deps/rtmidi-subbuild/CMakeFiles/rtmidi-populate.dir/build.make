@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild
+CMAKE_SOURCE_DIR = /Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild
+CMAKE_BINARY_DIR = /Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild
 
 # Utility rule file for rtmidi-populate.
 
@@ -77,60 +77,60 @@ CMakeFiles/rtmidi-populate-complete: rtmidi-populate-prefix/src/rtmidi-populate-
 CMakeFiles/rtmidi-populate-complete: rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-build
 CMakeFiles/rtmidi-populate-complete: rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-install
 CMakeFiles/rtmidi-populate-complete: rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-test
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Completed 'rtmidi-populate'"
-	/opt/homebrew/bin/cmake -E make_directory /Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/CMakeFiles
-	/opt/homebrew/bin/cmake -E touch /Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/CMakeFiles/rtmidi-populate-complete
-	/opt/homebrew/bin/cmake -E touch /Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-done
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Completed 'rtmidi-populate'"
+	/opt/homebrew/bin/cmake -E make_directory /Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild/CMakeFiles
+	/opt/homebrew/bin/cmake -E touch /Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild/CMakeFiles/rtmidi-populate-complete
+	/opt/homebrew/bin/cmake -E touch /Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild/rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-done
 
 rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-update:
 .PHONY : rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-update
 
 rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-build: rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-configure
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "No build step for 'rtmidi-populate'"
-	cd /Users/pat/space/midi_sequencer/build/_deps/rtmidi-build && /opt/homebrew/bin/cmake -E echo_append
-	cd /Users/pat/space/midi_sequencer/build/_deps/rtmidi-build && /opt/homebrew/bin/cmake -E touch /Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "No build step for 'rtmidi-populate'"
+	cd /Users/pat/Desktop/Selekt/build/_deps/rtmidi-build && /opt/homebrew/bin/cmake -E echo_append
+	cd /Users/pat/Desktop/Selekt/build/_deps/rtmidi-build && /opt/homebrew/bin/cmake -E touch /Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild/rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-build
 
 rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-configure: rtmidi-populate-prefix/tmp/rtmidi-populate-cfgcmd.txt
 rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-configure: rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-patch
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "No configure step for 'rtmidi-populate'"
-	cd /Users/pat/space/midi_sequencer/build/_deps/rtmidi-build && /opt/homebrew/bin/cmake -E echo_append
-	cd /Users/pat/space/midi_sequencer/build/_deps/rtmidi-build && /opt/homebrew/bin/cmake -E touch /Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-configure
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "No configure step for 'rtmidi-populate'"
+	cd /Users/pat/Desktop/Selekt/build/_deps/rtmidi-build && /opt/homebrew/bin/cmake -E echo_append
+	cd /Users/pat/Desktop/Selekt/build/_deps/rtmidi-build && /opt/homebrew/bin/cmake -E touch /Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild/rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-configure
 
 rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-download: rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-gitinfo.txt
 rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-download: rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-mkdir
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Performing download step (git clone) for 'rtmidi-populate'"
-	cd /Users/pat/space/midi_sequencer/build/_deps && /opt/homebrew/bin/cmake -DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE -P /Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/rtmidi-populate-prefix/tmp/rtmidi-populate-gitclone.cmake
-	cd /Users/pat/space/midi_sequencer/build/_deps && /opt/homebrew/bin/cmake -E touch /Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-download
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Performing download step (git clone) for 'rtmidi-populate'"
+	cd /Users/pat/Desktop/Selekt/build/_deps && /opt/homebrew/bin/cmake -DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE -P /Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild/rtmidi-populate-prefix/tmp/rtmidi-populate-gitclone.cmake
+	cd /Users/pat/Desktop/Selekt/build/_deps && /opt/homebrew/bin/cmake -E touch /Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild/rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-download
 
 rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-install: rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "No install step for 'rtmidi-populate'"
-	cd /Users/pat/space/midi_sequencer/build/_deps/rtmidi-build && /opt/homebrew/bin/cmake -E echo_append
-	cd /Users/pat/space/midi_sequencer/build/_deps/rtmidi-build && /opt/homebrew/bin/cmake -E touch /Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-install
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "No install step for 'rtmidi-populate'"
+	cd /Users/pat/Desktop/Selekt/build/_deps/rtmidi-build && /opt/homebrew/bin/cmake -E echo_append
+	cd /Users/pat/Desktop/Selekt/build/_deps/rtmidi-build && /opt/homebrew/bin/cmake -E touch /Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild/rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-install
 
 rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-mkdir:
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Creating directories for 'rtmidi-populate'"
-	/opt/homebrew/bin/cmake -Dcfgdir= -P /Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/rtmidi-populate-prefix/tmp/rtmidi-populate-mkdirs.cmake
-	/opt/homebrew/bin/cmake -E touch /Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-mkdir
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Creating directories for 'rtmidi-populate'"
+	/opt/homebrew/bin/cmake -Dcfgdir= -P /Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild/rtmidi-populate-prefix/tmp/rtmidi-populate-mkdirs.cmake
+	/opt/homebrew/bin/cmake -E touch /Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild/rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-mkdir
 
 rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-patch: rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-patch-info.txt
 rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-patch: rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-update
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "No patch step for 'rtmidi-populate'"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "No patch step for 'rtmidi-populate'"
 	/opt/homebrew/bin/cmake -E echo_append
-	/opt/homebrew/bin/cmake -E touch /Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-patch
+	/opt/homebrew/bin/cmake -E touch /Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild/rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-patch
 
 rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-update:
 .PHONY : rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-update
 
 rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-test: rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-install
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "No test step for 'rtmidi-populate'"
-	cd /Users/pat/space/midi_sequencer/build/_deps/rtmidi-build && /opt/homebrew/bin/cmake -E echo_append
-	cd /Users/pat/space/midi_sequencer/build/_deps/rtmidi-build && /opt/homebrew/bin/cmake -E touch /Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-test
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "No test step for 'rtmidi-populate'"
+	cd /Users/pat/Desktop/Selekt/build/_deps/rtmidi-build && /opt/homebrew/bin/cmake -E echo_append
+	cd /Users/pat/Desktop/Selekt/build/_deps/rtmidi-build && /opt/homebrew/bin/cmake -E touch /Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild/rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-test
 
 rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-update: rtmidi-populate-prefix/tmp/rtmidi-populate-gitupdate.cmake
 rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-update: rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-update-info.txt
 rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-update: rtmidi-populate-prefix/src/rtmidi-populate-stamp/rtmidi-populate-download
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Performing update step for 'rtmidi-populate'"
-	cd /Users/pat/space/midi_sequencer/build/_deps/rtmidi-src && /opt/homebrew/bin/cmake -Dcan_fetch=YES -DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE -P /Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/rtmidi-populate-prefix/tmp/rtmidi-populate-gitupdate.cmake
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Performing update step for 'rtmidi-populate'"
+	cd /Users/pat/Desktop/Selekt/build/_deps/rtmidi-src && /opt/homebrew/bin/cmake -Dcan_fetch=YES -DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE -P /Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild/rtmidi-populate-prefix/tmp/rtmidi-populate-gitupdate.cmake
 
 CMakeFiles/rtmidi-populate.dir/codegen:
 .PHONY : CMakeFiles/rtmidi-populate.dir/codegen
@@ -157,6 +157,6 @@ CMakeFiles/rtmidi-populate.dir/clean:
 .PHONY : CMakeFiles/rtmidi-populate.dir/clean
 
 CMakeFiles/rtmidi-populate.dir/depend:
-	cd /Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild /Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild /Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild /Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild /Users/pat/space/midi_sequencer/build/_deps/rtmidi-subbuild/CMakeFiles/rtmidi-populate.dir/DependInfo.cmake "--color=$(COLOR)" rtmidi-populate
+	cd /Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild /Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild /Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild /Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild /Users/pat/Desktop/Selekt/build/_deps/rtmidi-subbuild/CMakeFiles/rtmidi-populate.dir/DependInfo.cmake "--color=$(COLOR)" rtmidi-populate
 .PHONY : CMakeFiles/rtmidi-populate.dir/depend
 
