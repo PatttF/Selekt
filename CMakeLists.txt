@@ -101,7 +101,11 @@ else()
     add_executable(selekt src/main.cpp)
 endif()
 
-target_link_libraries(selekt PRIVATE imgui_lib rtmidi)
+if(ANDROID)
+    target_link_libraries(selekt PRIVATE imgui_lib)
+else()
+    target_link_libraries(selekt PRIVATE imgui_lib rtmidi)
+endif()
 
 if(ANDROID)
     target_link_libraries(selekt PRIVATE native_app_glue android log EGL GLESv3 amidi m jnigraphics )

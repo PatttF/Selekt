@@ -28,7 +28,35 @@ struct android_app* g_App = nullptr;
 #ifndef __ANDROID__
 #include <GLFW/glfw3.h>
 #endif
+
+
+#ifdef __ANDROID__
+#include <string>
+#include <vector>
+// Stub RtMidi for Android
+class RtMidiOut {
+public:
+    void openPort(unsigned int) {}
+    void closePort() {}
+    void sendMessage(std::vector<unsigned char>*) {}
+    unsigned int getPortCount() { return 0; }
+    std::string getPortName(unsigned int) { return ""; }
+    void openVirtualPort(std::string) {}
+};
+class RtMidiIn {
+public:
+    void openPort(unsigned int) {}
+    void closePort() {}
+    void setCallback(void(*)(double, std::vector<unsigned char>*, void*), void*) {}
+    void ignoreTypes(bool, bool, bool) {}
+    unsigned int getPortCount() { return 0; }
+    std::string getPortName(unsigned int) { return ""; }
+    void openVirtualPort(std::string) {}
+};
+#else
 #include "RtMidi.h"
+#endif
+
 
 #define DRUM_SYNTH_IMPL
 #include "drum_synth.h"
@@ -3444,7 +3472,8 @@ static void Init(struct android_app* app)
             EGL_BLUE_SIZE, 8,
             EGL_GREEN_SIZE, 8,
             EGL_RED_SIZE, 8,
-            EGL_DEPTH_SIZE, 24,
+            EGL_DEPTH_SIZE, 16,
+            EGL_ALPHA_SIZE, 8,
             EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
             EGL_NONE
         };
