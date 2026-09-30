@@ -90,3 +90,10 @@ All fetched automatically via CMake FetchContent at configure time:
 ## License
 
 MIT
+
+### Android
+```bash
+cd android
+gradle assembleDebug
+# The APK will be available in android/app/build/outputs/apk/debug/app-debug.apk
+```
