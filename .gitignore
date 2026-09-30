@@ -1,0 +1,15 @@
+android/app/build/
+android/app/.cxx/
+android/.gradle/
+android/local.properties
+build-test/
+android_main.cpp
+test_cmake_ndk.cmake
+main_tail.txt
+patch_main.py
+patch_time.py
+android/app/build/
+android/app/.cxx/
+android/.gradle/
+android/gradle.properties
+build-desktop/
