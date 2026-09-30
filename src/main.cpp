@@ -10,10 +10,24 @@
 #endif
 
 #include "imgui.h"
+#ifdef __ANDROID__
+#include "imgui_impl_android.h"
+struct android_app;
+struct android_app* g_App = nullptr;
+#include <android/log.h>
+#include <android_native_app_glue.h>
+#include <EGL/egl.h>
+#include <GLES3/gl3.h>
+#else
 #include "imgui_impl_glfw.h"
+#endif
 #include "imgui_impl_opengl3.h"
 #include "imgui_internal.h"
+
+
+#ifndef __ANDROID__
 #include <GLFW/glfw3.h>
+#endif
 #include "RtMidi.h"
 
 #define DRUM_SYNTH_IMPL
@@ -31,6 +45,13 @@
 #include <mutex>
 #include <string>
 #include <vector>
+#include <chrono>
+
+static double get_time_sec() {
+    static auto start = std::chrono::steady_clock::now();
+    return std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
+}
+
 
 // ═══════════════════════════════════════════════════════════════════════
 static constexpr int   WIN_W      = 1280;
@@ -1125,7 +1146,7 @@ static ImFont* fTiny = nullptr;
 //  RENDER FRAME
 // ═══════════════════════════════════════════════════════════════════════
 static void renderFrame(App& app) {
-    double now = glfwGetTime();
+    double now = get_time_sec();
     ImGuiIO& io = ImGui::GetIO();
     ++app.frameCount;
 
@@ -3129,7 +3150,7 @@ static void renderFrame(App& app) {
     // ── Keyboard ─────────────────────────────────────────────────────
     if (ImGui::IsKeyPressed(ImGuiKey_Space) && !app.showMidi) {
         app.playing = !app.playing;
-        if (app.playing) { app.curStep = 0; app.lastStep = glfwGetTime(); if (app.clockOut) app.midi.sendRaw(0xFA); }
+        if (app.playing) { app.curStep = 0; app.lastStep = get_time_sec(); if (app.clockOut) app.midi.sendRaw(0xFA); }
         else { if (app.clockOut) app.midi.sendRaw(0xFC); }
     }
     if (ImGui::IsKeyPressed(ImGuiKey_M)) {
@@ -3142,7 +3163,13 @@ static void renderFrame(App& app) {
     }
     if (ImGui::IsKeyPressed(ImGuiKey_Escape)) {
         if (app.showMidi) app.showMidi = false;
-        else glfwSetWindowShouldClose(glfwGetCurrentContext(), GLFW_TRUE);
+        else {
+#ifndef __ANDROID__
+            glfwSetWindowShouldClose(glfwGetCurrentContext(), GLFW_TRUE);
+#else
+            g_App->destroyRequested = 1;
+#endif
+        }
     }
     if (!app.showMidi) {
         if (ImGui::IsKeyPressed(ImGuiKey_Equal) || ImGui::IsKeyPressed(ImGuiKey_KeypadAdd))
@@ -3155,33 +3182,13 @@ static void renderFrame(App& app) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════
-int main(int, char**) {
+
+static void InitSharedApp(App& app) {
     srand((unsigned)time(nullptr));
 
-    // ── Init audio synth ─────────────────────────────────────────────
     if (!g_synth.init()) {
         fprintf(stderr, "Warning: audio device init failed — synth disabled\n");
     }
-
-    if (!glfwInit()) { fprintf(stderr, "GLFW init failed\n"); return 1; }
-
-#ifdef __APPLE__
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
-    const char* glsl_version = "#version 150";
-#else
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    const char* glsl_version = "#version 130";
-#endif
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-
-    GLFWwindow* window = glfwCreateWindow(WIN_W, WIN_H, "SELEKT", nullptr, nullptr);
-    if (!window) { fprintf(stderr, "Window creation failed\n"); glfwTerminate(); return 1; }
-    glfwMakeContextCurrent(window);
-    glfwSwapInterval(1);
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -3195,11 +3202,6 @@ int main(int, char**) {
     st.AntiAliasedLines = true; st.AntiAliasedFill = true;
     ImGui::StyleColorsDark();
 
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init(glsl_version);
-
-    // ── Font loading (embedded) ────────────────────────────────────────
-    // ImGui needs writable copies of font data, so memcpy from const static arrays
     auto loadEmbedded = [&](const unsigned char* data, unsigned int size, float sz) -> ImFont* {
         ImFontConfig cfg;
         cfg.FontDataOwnedByAtlas = false;
@@ -3215,20 +3217,14 @@ int main(int, char**) {
     if (!fTiny) fTiny = fSm;
     io.Fonts->Build();
 
-    // ── Init state ───────────────────────────────────────────────────
-    App app;
     for (int t = 0; t < NUM_TRACKS; ++t) {
         app.tracks[t].name = TDEFS[t].n;
         app.tracks[t].note = TDEFS[t].note;
         app.tracks[t].dtype = TDEFS[t].dtype;
         app.tracks[t].ch = 0;
         app.tracks[t].vel = 100;
-        // Each track defaults to its own drum patch index (0-15)
-        // so all 16 pads have distinct patches ready to go in CT drum mode
         app.tracks[t].synthP[0] = t;
     }
-    // ── Per-track default synth parameters (distinct character per instrument) ──
-    // Format: p[0-5]=SYNTH  p[6-11]=EXT  p[12-17]=FX  p[18-23]=SEND
     {
         auto sp = [&](int t, int p0, int p1, int p2, int p3, int p4, int p5,
                        int pe0, int pe1, int pe2, int pe3, int pe4, int pe5) {
@@ -3236,74 +3232,86 @@ int main(int, char**) {
             p[0]=p0; p[1]=p1; p[2]=p2; p[3]=p3; p[4]=p4; p[5]=p5;
             p[6]=pe0; p[7]=pe1; p[8]=pe2; p[9]=pe3; p[10]=pe4; p[11]=pe5;
         };
-        //                  PITCH DEC  p2   p3   p4   p5    pe0  pe1  pe2  pe3  pe4  pe5
-        sp( 0,/*KICK   */   64,   75,  30,  40,  50,  64,   20,  64,   0,   0,  10,  30);
-        sp( 1,/*SNARE  */   50,   55,  70,  75,  60,  15,    0,   0,  40,  30,  30,  45);
-        sp( 2,/*HI-HAT */   70,   15,  64,  85,  85,   5,    0,   0,  40,  55,   0,   0);
-        sp( 3,/*OH     */   55,   85,  45,  60,  50, 115,    0,   0,  15,  15,   0,  18);
-        sp( 4,/*LO PRC */   20,   45,  75,  55,  35,  85,   45,  35,  12,   0,  22,  12);
-        sp( 5,/*HI TOM */  105,   48,  60,  58,  48,  22,   12,   0,  42,  22,   0,   0);
-        sp( 6,/*MID TOM*/   64,   55,  55,  52,  55,  16,    8,   0,  35,  16,   0,   6);
-        sp( 7,/*LO TOM */   18,   68,  42,  45,  68,  10,    5,   0,  22,  10,   0,  12);
-        sp( 8,/*CLAP   */   64,   50,  64,  30,  20,  40,    0,  30,  40,  30,  20,   0);
-        sp( 9,/*SHAKER */   75,   35,  55,  95,  12,  85,   50,  45,  65,  28,   0,  25);
-        sp(10,/*COWBELL*/   64,   32,  25,  50,  22,  18,   22,  42,   0,  35,   0,  12);
-        //     RIDE:  PITCH DEC BELL STICK TONE WASH  BELLRN BELLHM DAMP PING SUSTN EDGE
-        sp(11,/*RIDE   */   68,   72,  90,  65,  55,  28,   18,  25,  35,  45,  72,  20);
-        //     CRASH: PITCH DEC SPREAD SIZZLE TONE BODY  WASH BURST BRGHT ATTACK TAIL TRASH
-        sp(12,/*CRASH  */   45,   57,  72,  75,  38,  55,   65,  58,  42,  55,  85,  18);
-        sp(13,/*TOM 1  */   88,   50,  58,  54,  46,  20,   10,   0,  38,  20,   0,   0);
-        sp(14,/*TOM 2  */   38,   62,  48,  48,  62,  12,    6,   0,  28,  12,   0,   8);
-        sp(15,/*PERC   */   64,   50,  64,  55,  25,  50,   50,  42,   0,  10,  16,   0);
+        sp( 0,   64,   75,  30,  40,  50,  64,   20,  64,   0,   0,  10,  30);
+        sp( 1,   50,   55,  70,  75,  60,  15,    0,   0,  40,  30,  30,  45);
+        sp( 2,   70,   15,  64,  85,  85,   5,    0,   0,  40,  55,   0,   0);
+        sp( 3,   55,   85,  45,  60,  50, 115,    0,   0,  15,  15,   0,  18);
+        sp( 4,   20,   45,  75,  55,  35,  85,   45,  35,  12,   0,  22,  12);
+        sp( 5,  105,   48,  60,  58,  48,  22,   12,   0,  42,  22,   0,   0);
+        sp( 6,   64,   55,  55,  52,  55,  16,    8,   0,  35,  16,   0,   6);
+        sp( 7,   18,   68,  42,  45,  68,  10,    5,   0,  22,  10,   0,  12);
+        sp( 8,   64,   50,  64,  30,  20,  40,    0,  30,  40,  30,  20,   0);
+        sp( 9,   75,   35,  55,  95,  12,  85,   50,  45,  65,  28,   0,  25);
+        sp(10,   64,   32,  25,  50,  22,  18,   22,  42,   0,  35,   0,  12);
+        sp(11,   68,   72,  90,  65,  55,  28,   18,  25,  35,  45,  72,  20);
+        sp(12,   45,   57,  72,  75,  38,  55,   65,  58,  42,  55,  85,  18);
+        sp(13,   88,   50,  58,  54,  46,  20,   10,   0,  38,  20,   0,   0);
+        sp(14,   38,   62,  48,  48,  62,  12,    6,   0,  28,  12,   0,   8);
+        sp(15,   64,   50,  64,  55,  25,  50,   50,  42,   0,  10,  16,   0);
     }
-    // ── Random minimal beat ─────────────────────────────────────────
     {
         auto hit = [&](int t, int s) { app.tracks[t].steps[s].on = true; };
-
-        // KICK: pick a common pattern variant
         int kickPat = rand() % 6;
         switch (kickPat) {
-            case 0: hit(0,0); hit(0,8);                         break; // half-time
-            case 1: hit(0,0); hit(0,4); hit(0,8); hit(0,12);    break; // four-on-floor
-            case 2: hit(0,0); hit(0,6); hit(0,10);              break; // syncopated
-            case 3: hit(0,0); hit(0,10); hit(0,12);             break; // hip-hop
-            case 4: hit(0,0); hit(0,4); hit(0,10);              break; // broken
-            case 5: hit(0,0); hit(0,3); hit(0,8); hit(0,11);   break; // shuffle
+            case 0: hit(0,0); hit(0,8);                         break;
+            case 1: hit(0,0); hit(0,4); hit(0,8); hit(0,12);    break;
+            case 2: hit(0,0); hit(0,6); hit(0,10);              break;
+            case 3: hit(0,0); hit(0,10); hit(0,12);             break;
+            case 4: hit(0,0); hit(0,4); hit(0,10);              break;
+            case 5: hit(0,0); hit(0,3); hit(0,8); hit(0,11);   break;
         }
-
-        // SNARE: backbeat with variations
         int snarePat = rand() % 4;
         switch (snarePat) {
-            case 0: hit(1,4); hit(1,12);                         break; // standard backbeat
-            case 1: hit(1,4); hit(1,10); hit(1,12);              break; // with pickup
-            case 2: hit(1,4); hit(1,12); hit(1,14);              break; // anticipated
-            case 3: hit(1,8);                                     break; // half-time
+            case 0: hit(1,4); hit(1,12);                         break;
+            case 1: hit(1,4); hit(1,10); hit(1,12);              break;
+            case 2: hit(1,4); hit(1,12); hit(1,14);              break;
+            case 3: hit(1,8);                                     break;
         }
-
-        // HI-HAT: 50% chance of 8ths, otherwise a sparser pattern
         if (rand() % 2) {
-            for (int s = 0; s < 16; s += 2) hit(2, s);          // 8th notes
-            // maybe open hat on a couple off-beats
+            for (int s = 0; s < 16; s += 2) hit(2, s);
             if (rand() % 2) { int oh = (rand() % 4) * 4 + 2; hit(3, oh); }
         } else {
-            // sparse: every 4th
             for (int s = 0; s < 16; s += 4) hit(2, s);
-            // add 1-2 random off-beat hats
             for (int i = 0; i < 1 + rand() % 2; ++i) {
                 int s = (rand() % 8) * 2 + 1;
                 hit(2, s % 16);
             }
         }
-
-        // CLAP: 40% chance, on backbeat or off-beat
         if (rand() % 5 < 2) {
             int clapStep = (rand() % 2) ? 4 : 12;
             hit(8, clapStep);
         }
-
-        // Random BPM: 85-135
         app.bpm = 85.0f + (rand() % 51);
     }
+}
+
+#ifndef __ANDROID__
+int main(int, char**) {
+        if (!glfwInit()) { fprintf(stderr, "GLFW init failed\n"); return 1; }
+
+#ifdef __APPLE__
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, 1);
+    const char* glsl_version = "#version 150";
+#else
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    const char* glsl_version = "#version 130";
+#endif
+    glfwWindowHint(GLFW_RESIZABLE, 0);
+
+    GLFWwindow* window = glfwCreateWindow(WIN_W, WIN_H, "SELEKT", nullptr, nullptr);
+    if (!window) { fprintf(stderr, "Window creation failed\n"); glfwTerminate(); return 1; }
+    glfwMakeContextCurrent(window);
+    glfwSwapInterval(1);
+
+    App app;
+    InitSharedApp(app);
+
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init(glsl_version);
 
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
@@ -3333,5 +3341,193 @@ int main(int, char**) {
 #ifdef _WIN32
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     return main(0, nullptr);
+}
+#endif
+#endif // __ANDROID__
+
+
+#ifdef __ANDROID__
+
+#include <jni.h>
+extern "C" jint JNI_GetCreatedJavaVMs(JavaVM** vmBuf, jsize bufLen, jsize* nVMs) {
+    if (g_App && g_App->activity && g_App->activity->vm) {
+        if (bufLen > 0) {
+            vmBuf[0] = g_App->activity->vm;
+            if (nVMs) *nVMs = 1;
+            return JNI_OK;
+        }
+    }
+    if (nVMs) *nVMs = 0;
+    return JNI_OK;
+}
+// We use a global for the app state on Android
+static App* g_selektApp = nullptr;
+
+static EGLDisplay           g_EglDisplay = EGL_NO_DISPLAY;
+static EGLSurface           g_EglSurface = EGL_NO_SURFACE;
+static EGLContext           g_EglContext = EGL_NO_CONTEXT;
+static bool                 g_Initialized = false;
+static char                 g_LogTag[] = "SelektApp";
+
+static void MainLoopStep()
+{
+    ImGuiIO& io = ImGui::GetIO();
+    if (g_EglDisplay == EGL_NO_DISPLAY || !g_selektApp)
+        return;
+
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplAndroid_NewFrame();
+    ImGui::NewFrame();
+
+    renderFrame(*g_selektApp);
+
+    ImGui::Render();
+    glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
+    glClearColor(0.04f, 0.04f, 0.07f, 1.f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    eglSwapBuffers(g_EglDisplay, g_EglSurface);
+}
+
+static void Shutdown()
+{
+    if (!g_Initialized)
+        return;
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplAndroid_Shutdown();
+    ImGui::DestroyContext();
+    g_synth.shutdown();
+    if (g_selektApp) {
+        delete g_selektApp;
+        g_selektApp = nullptr;
+    }
+
+    if (g_EglDisplay != EGL_NO_DISPLAY)
+    {
+        eglMakeCurrent(g_EglDisplay, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
+
+        if (g_EglContext != EGL_NO_CONTEXT)
+            eglDestroyContext(g_EglDisplay, g_EglContext);
+
+        if (g_EglSurface != EGL_NO_SURFACE)
+            eglDestroySurface(g_EglDisplay, g_EglSurface);
+
+        eglTerminate(g_EglDisplay);
+    }
+
+    g_EglDisplay = EGL_NO_DISPLAY;
+    g_EglContext = EGL_NO_CONTEXT;
+    g_EglSurface = EGL_NO_SURFACE;
+    ANativeWindow_release(g_App->window);
+
+    g_Initialized = false;
+}
+
+static void Init(struct android_app* app)
+{
+    if (g_Initialized)
+        return;
+
+    g_App = app;
+    ANativeWindow_acquire(g_App->window);
+
+    {
+        g_EglDisplay = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+        if (g_EglDisplay == EGL_NO_DISPLAY)
+            __android_log_print(ANDROID_LOG_ERROR, g_LogTag, "%s", "eglGetDisplay(EGL_DEFAULT_DISPLAY) returned EGL_NO_DISPLAY");
+
+        if (eglInitialize(g_EglDisplay, 0, 0) != EGL_TRUE)
+            __android_log_print(ANDROID_LOG_ERROR, g_LogTag, "%s", "eglInitialize() returned with an error");
+
+        const EGLint egl_attributes[] = {
+            EGL_BLUE_SIZE, 8,
+            EGL_GREEN_SIZE, 8,
+            EGL_RED_SIZE, 8,
+            EGL_DEPTH_SIZE, 24,
+            EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
+            EGL_NONE
+        };
+        EGLint num_configs = 0;
+        if (eglChooseConfig(g_EglDisplay, egl_attributes, nullptr, 0, &num_configs) != EGL_TRUE)
+            __android_log_print(ANDROID_LOG_ERROR, g_LogTag, "%s", "eglChooseConfig() returned with an error");
+        if (num_configs == 0)
+            __android_log_print(ANDROID_LOG_ERROR, g_LogTag, "%s", "eglChooseConfig() returned 0 matching config");
+
+        EGLConfig egl_config;
+        eglChooseConfig(g_EglDisplay, egl_attributes, &egl_config, 1, &num_configs);
+        EGLint egl_format;
+        eglGetConfigAttrib(g_EglDisplay, egl_config, EGL_NATIVE_VISUAL_ID, &egl_format);
+        ANativeWindow_setBuffersGeometry(g_App->window, 0, 0, egl_format);
+
+        const EGLint egl_context_attributes[] = { EGL_CONTEXT_CLIENT_VERSION, 3, EGL_NONE };
+        g_EglContext = eglCreateContext(g_EglDisplay, egl_config, EGL_NO_CONTEXT, egl_context_attributes);
+
+        if (g_EglContext == EGL_NO_CONTEXT)
+            __android_log_print(ANDROID_LOG_ERROR, g_LogTag, "%s", "eglCreateContext() returned EGL_NO_CONTEXT");
+
+        g_EglSurface = eglCreateWindowSurface(g_EglDisplay, egl_config, g_App->window, nullptr);
+        eglMakeCurrent(g_EglDisplay, g_EglSurface, g_EglSurface, g_EglContext);
+    }
+
+    g_selektApp = new App();
+    InitSharedApp(*g_selektApp);
+
+    ImGui_ImplAndroid_Init(g_App->window);
+    ImGui_ImplOpenGL3_Init("#version 300 es");
+
+    // Setup scaling based on DPI/density can be done here.
+    float main_scale = 1.0f; // Could adjust this later if needed
+    ImGuiStyle& style = ImGui::GetStyle();
+    style.ScaleAllSizes(main_scale);
+
+
+    g_Initialized = true;
+}
+
+static int32_t handleInputEvent(struct android_app* app, AInputEvent* inputEvent)
+{
+    return ImGui_ImplAndroid_HandleInputEvent(inputEvent);
+}
+
+static void handleAppCmd(struct android_app* app, int32_t appCmd)
+{
+    switch (appCmd)
+    {
+    case APP_CMD_SAVE_STATE:
+        break;
+    case APP_CMD_INIT_WINDOW:
+        Init(app);
+        break;
+    case APP_CMD_TERM_WINDOW:
+        Shutdown();
+        break;
+    case APP_CMD_GAINED_FOCUS:
+    case APP_CMD_LOST_FOCUS:
+        break;
+    }
+}
+
+void android_main(struct android_app* app)
+{
+    app->onAppCmd = handleAppCmd;
+    app->onInputEvent = handleInputEvent;
+
+    while (true)
+    {
+        int out_events;
+        struct android_poll_source* out_data;
+        while (ALooper_pollOnce(g_Initialized ? 0 : -1, nullptr, &out_events, (void**)&out_data) >= 0)
+        {
+            if (out_data != nullptr)
+                out_data->process(app, out_data);
+            if (app->destroyRequested != 0)
+            {
+                if (!g_Initialized) Shutdown();
+                return;
+            }
+        }
+        MainLoopStep();
+    }
 }
 #endif
