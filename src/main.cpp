@@ -3214,7 +3214,12 @@ static void renderFrame(App& app) {
 static void InitSharedApp(App& app) {
     srand((unsigned)time(nullptr));
 
+    #ifndef __ANDROID__
     if (!g_synth.init()) {
+        fprintf(stderr, "Warning: audio device init failed \u2014 synth disabled\n");
+    }
+#endif
+    if (false) {
         fprintf(stderr, "Warning: audio device init failed — synth disabled\n");
     }
 
@@ -3377,7 +3382,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 #ifdef __ANDROID__
 
 #include <jni.h>
-extern "C" jint JNI_GetCreatedJavaVMs(JavaVM** vmBuf, jsize bufLen, jsize* nVMs) {
+extern "C" JNIEXPORT jint JNICALL JNI_GetCreatedJavaVMs(JavaVM** vmBuf, jsize bufLen, jsize* nVMs) {
     if (g_App && g_App->activity && g_App->activity->vm) {
         if (bufLen > 0) {
             vmBuf[0] = g_App->activity->vm;
@@ -3515,6 +3520,7 @@ static void Init(struct android_app* app)
 
 static int32_t handleInputEvent(struct android_app* app, AInputEvent* inputEvent)
 {
+    if (!g_Initialized) return 0;
     return ImGui_ImplAndroid_HandleInputEvent(inputEvent);
 }
 
@@ -3538,6 +3544,7 @@ static void handleAppCmd(struct android_app* app, int32_t appCmd)
 
 void android_main(struct android_app* app)
 {
+    g_App = app;
     app->onAppCmd = handleAppCmd;
     app->onInputEvent = handleInputEvent;
 
