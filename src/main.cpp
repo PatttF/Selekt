@@ -418,6 +418,8 @@ static const struct { const char* n; int note; int dtype; } TDEFS[NUM_TRACKS] = 
 struct PendingOff { int ch; int note; double time; };
 
 struct App {
+    float scale = 1.0f;
+
     Track  tracks[NUM_TRACKS];
     int    selTrk   = 0;
     bool   playing  = false;
@@ -1609,7 +1611,7 @@ static void renderFrame(App& app) {
     float contentY = hdrH + 2;
     float statusH = 0;
     float contentH = H - contentY - statusH;
-    float leftW = 320;
+    float leftW = 320 * app.scale;
     float divX = leftW;
     float tedH = 0;   // track editor moved to pad-hold popup
     float padAreaH = contentH - tedH;
@@ -1617,12 +1619,12 @@ static void renderFrame(App& app) {
     int padGap = 6;
     int padS = (int)((leftW - 20 - 3*padGap) / 4);
     if (padS > 72) padS = 72;
-    int padGridW = 4*padS + 3*padGap;
+    int padGridW = (4*padS + 3*padGap);
     int padGridH = 4*padS + 3*padGap;
     float padGX = 10 + (leftW - 20 - padGridW) / 2.f;
     float padGY = contentY + 6 + (padAreaH - padGridH - 6) / 2.f;
 
-    float lblW = 54;
+    float lblW = 54 * app.scale;
     float seqHdrH = 20;
     float synthPanH = 106;  // title bar removed; freed height goes to step rows
     float seqX = divX + lblW;
@@ -1659,7 +1661,7 @@ static void renderFrame(App& app) {
             dl->AddText(ImVec2(cx+bs.x/2+8, bpmY+bpmH/2-6), im(100,95,140), swg);
             if (fTiny) ImGui::PopFont();
         }
-        float btnW = 36.f, btnH = 36.f;
+        float btnW = 36.f * app.scale, btnH = 36.f * app.scale;
         float mpx = cx - bs.x/2 - btnW - 10.f;
         float ppx = cx + bs.x/2 + (app.swing > 0 ? 62.f : 10.f);
         float bby = bpmY + bpmH/2 - btnH/2;
@@ -2309,7 +2311,7 @@ static void renderFrame(App& app) {
         if (!est.on) { app.editT = -1; app.editS = -1; }
         else {
             // Use page-relative index for cell position
-            float popW = 310, popH = 282;
+            float popW = 310 * app.scale, popH = 282 * app.scale;
             int localSE = app.editS - app.viewPage * NUM_STEPS;
             float cellX = seqX + localSE * stepW;
             float cellY = contentY + seqHdrH + app.editT * rowH;
@@ -2617,7 +2619,7 @@ static void renderFrame(App& app) {
                     dl->AddText(ImVec2(cx+2, cy+paramRH/2-lbs.y/2), im(210,195,255), labelStr);
                     if (fSm) ImGui::PopFont();
                     // < button
-                    float bW = 22.f, bH = 20.f;
+                    float bW = 22.f * app.scale, bH = 20.f * app.scale;
                     float bY = cy + paramRH/2 - bH/2;
                     float lbx = cx + 54;
                     float rbx = cx + colW - bW - 2;
@@ -2720,7 +2722,7 @@ static void renderFrame(App& app) {
         Track& ptr = app.tracks[app.selTrk];
         ImU32 ptc = TCLR[app.selTrk];
 
-        float popW = 440, pRowH = 64;
+        float popW = 440 * app.scale, pRowH = 64 * app.scale;
         float titleH = 46, cbH = 50;
         bool isCTDrumPopup = (app.ctTrack >= 2);
         float popH = titleH + (isCTDrumPopup ? 5 : 4)*pRowH + 14 + cbH;
@@ -3062,8 +3064,8 @@ static void renderFrame(App& app) {
             dl->AddText(ImVec2(mlx, moy+2), im(90,85,125), "OUTPUT CHANNEL");
             if (fTiny) ImGui::PopFont();
 
-            const float chBtnW = 58, chBtnH = 52;
-            const float chValW = 76;
+            const float chBtnW = 58 * app.scale, chBtnH = 52 * app.scale;
+            const float chValW = 76 * app.scale;
             const float chBy   = moy + 18;
 
             // < button
@@ -3127,7 +3129,7 @@ static void renderFrame(App& app) {
             if (ImGui::IsItemHovered()) ImGui::SetMouseCursor(ImGuiMouseCursor_ResizeEW);
 
             // REFRESH PORTS button
-            const float rfH = 44, rfW = 170;
+            const float rfH = 44 * app.scale, rfW = 170 * app.scale;
             float rfy = py2 + ph - rfH - 14;
             DrawPill(dl, mlx, rfy, rfW, rfH, im(26,24,42), 10);
             dl->AddRect(ImVec2(mlx,rfy), ImVec2(mlx+rfW,rfy+rfH), im(50,46,78), 10);
@@ -3406,11 +3408,15 @@ static void MainLoopStep()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplAndroid_NewFrame();
     ImGui::NewFrame();
+    float phys_w = io.DisplaySize.x;
+    float phys_h = io.DisplaySize.y;
+    io.DisplaySize.x /= g_selektApp->scale;
+    io.DisplaySize.y /= g_selektApp->scale;
 
     renderFrame(*g_selektApp);
 
     ImGui::Render();
-    glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
+    glViewport(0, 0, (int)phys_w, (int)phys_h);
     glClearColor(0.04f, 0.04f, 0.07f, 1.f);
     glClear(GL_COLOR_BUFFER_BIT);
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -3512,12 +3518,6 @@ static void Init(struct android_app* app)
         }
     }
 
-    g_selektApp = new App();
-    InitSharedApp(*g_selektApp);
-
-    ImGui_ImplAndroid_Init(g_App->window);
-    ImGui_ImplOpenGL3_Init("#version 300 es");
-
     // Setup scaling based on DPI/density can be done here.
     float main_scale = 1.0f;
     if (g_App && g_App->config) {
@@ -3531,11 +3531,19 @@ static void Init(struct android_app* app)
         main_scale = 2.0f;
     }
 
+    g_selektApp = new App();
+    g_selektApp->scale = main_scale;
+    InitSharedApp(*g_selektApp);
+
+    ImGui_ImplAndroid_Init(g_App->window);
+    ImGui_ImplOpenGL3_Init("#version 300 es");
+
     // Scale everything
     ImGuiStyle& style = ImGui::GetStyle();
-    style.ScaleAllSizes(main_scale);
+    // style.ScaleAllSizes(main_scale); // Disabled, using FramebufferScale instead
     ImGuiIO& io = ImGui::GetIO();
-    io.FontGlobalScale = main_scale;
+    io.DisplayFramebufferScale = ImVec2(main_scale, main_scale);
+    // io.FontGlobalScale = main_scale; // Disabled, using FramebufferScale instead
 
 
     g_Initialized = true;
