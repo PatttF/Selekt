@@ -3407,11 +3407,13 @@ static void MainLoopStep()
 
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplAndroid_NewFrame();
-    ImGui::NewFrame();
+
     float phys_w = io.DisplaySize.x;
     float phys_h = io.DisplaySize.y;
     io.DisplaySize.x /= g_selektApp->scale;
     io.DisplaySize.y /= g_selektApp->scale;
+
+    ImGui::NewFrame();
 
     renderFrame(*g_selektApp);
 
