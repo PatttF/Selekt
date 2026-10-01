@@ -3477,30 +3477,44 @@ static void Init(struct android_app* app)
             EGL_BLUE_SIZE, 8,
             EGL_GREEN_SIZE, 8,
             EGL_RED_SIZE, 8,
-
+            EGL_DEPTH_SIZE, 16,
+            EGL_RENDERABLE_TYPE, EGL_OPENGL_ES3_BIT,
             EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
             EGL_NONE
         };
         EGLint num_configs = 0;
         if (eglChooseConfig(g_EglDisplay, egl_attributes, nullptr, 0, &num_configs) != EGL_TRUE)
             __android_log_print(ANDROID_LOG_ERROR, g_LogTag, "%s", "eglChooseConfig() returned with an error");
-        if (num_configs == 0)
-            __android_log_print(ANDROID_LOG_ERROR, g_LogTag, "%s", "eglChooseConfig() returned 0 matching config");
-
-        EGLConfig egl_config;
-        eglChooseConfig(g_EglDisplay, egl_attributes, &egl_config, 1, &num_configs);
-        EGLint egl_format;
-        eglGetConfigAttrib(g_EglDisplay, egl_config, EGL_NATIVE_VISUAL_ID, &egl_format);
-        ANativeWindow_setBuffersGeometry(g_App->window, 0, 0, egl_format);
-
-        const EGLint egl_context_attributes[] = { EGL_CONTEXT_CLIENT_VERSION, 3, EGL_NONE };
-        g_EglContext = eglCreateContext(g_EglDisplay, egl_config, EGL_NO_CONTEXT, egl_context_attributes);
-
-        if (g_EglContext == EGL_NO_CONTEXT)
-            __android_log_print(ANDROID_LOG_ERROR, g_LogTag, "%s", "eglCreateContext() returned EGL_NO_CONTEXT");
-
-        g_EglSurface = eglCreateWindowSurface(g_EglDisplay, egl_config, g_App->window, nullptr);
-        eglMakeCurrent(g_EglDisplay, g_EglSurface, g_EglSurface, g_EglContext);
+        if (num_configs == 0) {
+            __android_log_print(ANDROID_LOG_ERROR, g_LogTag, "%s", "eglChooseConfig() returned 0 matching config. Fallback to minimal config.");
+            const EGLint minimal_attributes[] = {
+                EGL_RENDERABLE_TYPE, EGL_OPENGL_ES3_BIT,
+                EGL_NONE
+            };
+            eglChooseConfig(g_EglDisplay, minimal_attributes, nullptr, 0, &num_configs);
+            if (num_configs == 0) return;
+            EGLConfig egl_config;
+            eglChooseConfig(g_EglDisplay, minimal_attributes, &egl_config, 1, &num_configs);
+            EGLint egl_format;
+            eglGetConfigAttrib(g_EglDisplay, egl_config, EGL_NATIVE_VISUAL_ID, &egl_format);
+            ANativeWindow_setBuffersGeometry(g_App->window, 0, 0, egl_format);
+            const EGLint egl_context_attributes[] = { EGL_CONTEXT_CLIENT_VERSION, 3, EGL_NONE };
+            g_EglContext = eglCreateContext(g_EglDisplay, egl_config, EGL_NO_CONTEXT, egl_context_attributes);
+            g_EglSurface = eglCreateWindowSurface(g_EglDisplay, egl_config, g_App->window, nullptr);
+            eglMakeCurrent(g_EglDisplay, g_EglSurface, g_EglSurface, g_EglContext);
+        } else {
+            EGLConfig egl_config;
+            eglChooseConfig(g_EglDisplay, egl_attributes, &egl_config, 1, &num_configs);
+            EGLint egl_format;
+            eglGetConfigAttrib(g_EglDisplay, egl_config, EGL_NATIVE_VISUAL_ID, &egl_format);
+            ANativeWindow_setBuffersGeometry(g_App->window, 0, 0, egl_format);
+            const EGLint egl_context_attributes[] = { EGL_CONTEXT_CLIENT_VERSION, 3, EGL_NONE };
+            g_EglContext = eglCreateContext(g_EglDisplay, egl_config, EGL_NO_CONTEXT, egl_context_attributes);
+            if (g_EglContext == EGL_NO_CONTEXT)
+                __android_log_print(ANDROID_LOG_ERROR, g_LogTag, "%s", "eglCreateContext() returned EGL_NO_CONTEXT");
+            g_EglSurface = eglCreateWindowSurface(g_EglDisplay, egl_config, g_App->window, nullptr);
+            eglMakeCurrent(g_EglDisplay, g_EglSurface, g_EglSurface, g_EglContext);
+        }
     }
 
     g_selektApp = new App();
