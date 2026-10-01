@@ -3214,13 +3214,8 @@ static void renderFrame(App& app) {
 static void InitSharedApp(App& app) {
     srand((unsigned)time(nullptr));
 
-    #ifndef __ANDROID__
     if (!g_synth.init()) {
         fprintf(stderr, "Warning: audio device init failed \u2014 synth disabled\n");
-    }
-#endif
-    if (false) {
-        fprintf(stderr, "Warning: audio device init failed — synth disabled\n");
     }
 
     IMGUI_CHECKVERSION();
@@ -3524,9 +3519,23 @@ static void Init(struct android_app* app)
     ImGui_ImplOpenGL3_Init("#version 300 es");
 
     // Setup scaling based on DPI/density can be done here.
-    float main_scale = 1.0f; // Could adjust this later if needed
+    float main_scale = 1.0f;
+    if (g_App && g_App->config) {
+        int density = AConfiguration_getDensity(g_App->config);
+        if (density == ACONFIGURATION_DENSITY_NONE || density == ACONFIGURATION_DENSITY_DEFAULT || density == ACONFIGURATION_DENSITY_ANY) {
+            main_scale = 2.0f; // Assume at least 2x density for a decent baseline
+        } else {
+            main_scale = (float)density / 160.0f;
+        }
+    } else {
+        main_scale = 2.0f;
+    }
+
+    // Scale everything
     ImGuiStyle& style = ImGui::GetStyle();
     style.ScaleAllSizes(main_scale);
+    ImGuiIO& io = ImGui::GetIO();
+    io.FontGlobalScale = main_scale;
 
 
     g_Initialized = true;
