@@ -90,6 +90,7 @@ endif()
 # ── Executable ────────────────────────────────────────────────────────────────
 if(ANDROID)
     add_library(selekt SHARED src/main.cpp)
+    target_link_options(selekt PRIVATE -u ANativeActivity_onCreate)
 elseif(APPLE)
     add_executable(selekt MACOSX_BUNDLE src/main.cpp)
     set_target_properties(selekt PROPERTIES
@@ -101,7 +102,11 @@ else()
     add_executable(selekt src/main.cpp)
 endif()
 
-target_link_libraries(selekt PRIVATE imgui_lib rtmidi)
+if(ANDROID)
+    target_link_libraries(selekt PRIVATE imgui_lib)
+else()
+    target_link_libraries(selekt PRIVATE imgui_lib rtmidi)
+endif()
 
 if(ANDROID)
     target_link_libraries(selekt PRIVATE native_app_glue android log EGL GLESv3 amidi m jnigraphics )
