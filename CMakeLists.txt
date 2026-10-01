@@ -90,6 +90,7 @@ endif()
 # ── Executable ────────────────────────────────────────────────────────────────
 if(ANDROID)
     add_library(selekt SHARED src/main.cpp)
+    target_link_options(selekt PRIVATE -u ANativeActivity_onCreate)
 elseif(APPLE)
     add_executable(selekt MACOSX_BUNDLE src/main.cpp)
     set_target_properties(selekt PROPERTIES

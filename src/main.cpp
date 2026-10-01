@@ -3542,7 +3542,7 @@ static void handleAppCmd(struct android_app* app, int32_t appCmd)
     }
 }
 
-void android_main(struct android_app* app)
+extern "C" JNIEXPORT void JNICALL android_main(struct android_app* app)
 {
     g_App = app;
     app->onAppCmd = handleAppCmd;
