@@ -1284,7 +1284,7 @@ static void renderFrame(App& app) {
     }
 
     // ═════════════════════ HEADER BAR ═══════════════════════════════
-    float hdrH = 56;
+    float hdrH = 56 * app.scale;
     GradV(dl, ImVec2(0,0), ImVec2(W,hdrH), im(28,26,38), im(20,19,30));
     dl->AddRectFilled(ImVec2(0,hdrH-1), ImVec2(W,hdrH), im(80,70,120,100));
     dl->AddRectFilled(ImVec2(0,hdrH), ImVec2(W,hdrH+2), im(0,0,0,60));
@@ -1293,7 +1293,7 @@ static void renderFrame(App& app) {
     // ── MIDI button + Page controls (full-height touch row) ──
     {
         const float btnH = hdrH - 6.f, rowY = 3.f;
-        float bx = 8.f;
+        float bx = 8.f * app.scale;
 
         // MIDI button
         {
@@ -1618,7 +1618,7 @@ static void renderFrame(App& app) {
 
     int padGap = 6;
     int padS = (int)((leftW - 20 - 3*padGap) / 4);
-    if (padS > 72) padS = 72;
+    // if (padS > 72) padS = 72;
     int padGridW = (4*padS + 3*padGap);
     int padGridH = 4*padS + 3*padGap;
     float padGX = 10 + (leftW - 20 - padGridW) / 2.f;
@@ -1631,7 +1631,7 @@ static void renderFrame(App& app) {
     float stepW = (W - seqX - 4) / NUM_STEPS;
     float rowH = (contentH - seqHdrH - synthPanH) / NUM_TRACKS;
     if (rowH < 20) rowH = 20;
-    if (rowH > 44) rowH = 44;
+    // if (rowH > 44) rowH = 44;
     float gridBotY = contentY + seqHdrH + NUM_TRACKS * rowH;
     float synthTopY = gridBotY + 2;
 
@@ -1698,7 +1698,7 @@ static void renderFrame(App& app) {
         float oby  = octY + octH/2 - obH/2;
         float omx  = cx2 - obW - 36.f - 8.f;
         float opx  = cx2 + 36.f + 8.f;
-        bool isCT  = app.midi.outName().find("Circuit Tracks") != std::string::npos;
+        bool isCT = true; // FORCED TRUE FOR ANDROID UI
         bool isCTDrum = isCT && app.ctTrack >= 2;
         if (isCTDrum) {
             // Drum page selector instead of octave
@@ -1880,8 +1880,7 @@ static void renderFrame(App& app) {
         GradV(dl, ImVec2(0,tlY), ImVec2(leftW,H-statusH), im(14,13,22), im(10,9,17));
         dl->AddLine(ImVec2(0,tlY), ImVec2(leftW,tlY), im(50,45,70));
 
-        bool isCT   = app.midi.curOut() >= 0 &&
-                      app.midi.outName().find("Circuit Tracks") != std::string::npos;
+        bool isCT = true; // FORCED TRUE FOR ANDROID UI
         bool isCTDr = isCT && app.ctTrack >= 2;
 
         // ctDropOpen / pgDropOpen declared in outer scope above — sync with popup state
@@ -1894,8 +1893,8 @@ static void renderFrame(App& app) {
         static const char* pgMidi[]   = {"Page 1","Page 2","Page 3","Page 4"};
         static const char* pgDrum[]   = {"CTRL 1","CTRL 2"};
 
-        const float dh   = 36.f;
-        const float dpad = 6.f;
+        const float dh = 36.f * app.scale;
+        const float dpad = 6.f * app.scale;
         float bx   = dpad, bw = leftW - 2*dpad;
         float row1Y = tlY + 8.f;
         float row2Y = row1Y + dh + dpad;
@@ -2478,8 +2477,7 @@ static void renderFrame(App& app) {
         GradV(dl, ImVec2(spX, spY), ImVec2(W, spY+spH), im(18,17,28), im(12,11,20));
         dl->AddLine(ImVec2(spX, spY), ImVec2(W, spY), im(40,38,58));
 
-        bool isCT2   = app.midi.curOut() >= 0 &&
-                        app.midi.outName().find("Circuit Tracks") != std::string::npos;
+        bool isCT2 = true; // FORCED TRUE FOR ANDROID UI
         bool isCTDr2 = isCT2 && app.ctTrack >= 2;
         bool isCTSy2 = isCT2 && app.ctTrack >= 0 && app.ctTrack <= 1;
         int  ctDrumIdx2 = app.ctTrack - 2; // 0-3 when isCTDr2
@@ -3347,7 +3345,22 @@ int main(int, char**) {
         glfwPollEvents();
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
+        // Inverse scale mouse input
+
+    float scale_x = io.DisplaySize.x / base_w;
+    float scale_y = io.DisplaySize.y / base_h;
+    float global_scale = (scale_x < scale_y) ? scale_x : scale_y;
+    float offset_x = (io.DisplaySize.x - (base_w * global_scale)) * 0.5f;
+    float offset_y = (io.DisplaySize.y - (base_h * global_scale)) * 0.5f;
+
+    io.MousePos.x = (io.MousePos.x - offset_x) / global_scale;
+    io.MousePos.y = (io.MousePos.y - offset_y) / global_scale;
+
+    // Trick ImGui into thinking the screen is exactly 1280x800 for layout logic (like SetNextWindowSize)
+    io.DisplaySize.x = base_w;
+    io.DisplaySize.y = base_h;
+
+    ImGui::NewFrame();
         renderFrame(app);
         ImGui::Render();
         int dw, dh;
@@ -3408,17 +3421,15 @@ static void MainLoopStep()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplAndroid_NewFrame();
     ImGui::NewFrame();
-    float phys_w = io.DisplaySize.x;
-    float phys_h = io.DisplaySize.y;
-    io.DisplaySize.x /= g_selektApp->scale;
-    io.DisplaySize.y /= g_selektApp->scale;
 
     renderFrame(*g_selektApp);
 
     ImGui::Render();
-    glViewport(0, 0, (int)phys_w, (int)phys_h);
+
+    glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
     glClearColor(0.04f, 0.04f, 0.07f, 1.f);
     glClear(GL_COLOR_BUFFER_BIT);
+
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     eglSwapBuffers(g_EglDisplay, g_EglSurface);
 }
@@ -3540,10 +3551,9 @@ static void Init(struct android_app* app)
 
     // Scale everything
     ImGuiStyle& style = ImGui::GetStyle();
-    // style.ScaleAllSizes(main_scale); // Disabled, using FramebufferScale instead
+    style.ScaleAllSizes(main_scale);
     ImGuiIO& io = ImGui::GetIO();
-    io.DisplayFramebufferScale = ImVec2(main_scale, main_scale);
-    // io.FontGlobalScale = main_scale; // Disabled, using FramebufferScale instead
+    io.FontGlobalScale = main_scale;
 
 
     g_Initialized = true;
